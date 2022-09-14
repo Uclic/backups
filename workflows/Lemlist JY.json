@@ -1,0 +1,22 @@
+{
+  "id": 16,
+  "name": "Lemlist JY",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "createdAt": "2022-05-03T18:58:43.286Z",
+  "updatedAt": "2022-05-03T18:58:43.286Z",
+  "settings": {},
+  "staticData": null
+}
