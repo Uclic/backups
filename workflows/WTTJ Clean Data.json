@@ -1,0 +1,54 @@
+{
+  "id": 15,
+  "name": "WTTJ Clean Data",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "sheetId": "1vmQmcntuyfcwEZwQxXWi6T3x1UOp191l3mT3f8ai9vA",
+        "range": "A:Z",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-04-29T19:48:37.926Z",
+  "updatedAt": "2022-04-29T19:57:20.703Z",
+  "settings": {},
+  "staticData": null
+}
