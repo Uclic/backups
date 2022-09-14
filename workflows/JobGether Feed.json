@@ -1,0 +1,199 @@
+{
+  "id": 2,
+  "name": "JobGether Feed",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "job_data",
+        "options": {}
+      },
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        140,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.jobspikr.com/v2/data",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\"format\":\"json\",\"size\":100,\"dataset\":[\"job_board\"],\"search_query_json\":{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"job_title\",\"inferred_job_title\"],\"query\":\"\\\"remote\\\"\"}},{\"query_string\":{\"default_field\":\"job_type\",\"query\":\"\\\"full time\\\"\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"*\"}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Austria\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Belgium\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Croatia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Cyprus\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Czechia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Denmark\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Estonia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Finland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"France\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Germany\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Greece\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Hungary\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Ireland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Italy\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Latvia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Lithuania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Luxembourg\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Malta\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Netherlands\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Poland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Portugal\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Romania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovakia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovenia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Spain\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Sweden\\\"\"}}]}}]}},{\"range\":{\"post_date\":{\"gte\":\"{{$node[\"Google Sheets\"].json[\"Transform\"]}}\",\"lte\":\"{{$node[\"Google Sheets\"].json[\"Transform\"]}}\"}}},{\"query_string\":{\"default_field\":\"job_board\",\"query\":\"indeed OR  Linkedin\"}}],\"must_not\":[{\"query_string\":{\"default_field\":\"job_board\",\"query\":\"company_website\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"Unspecified\"}}]}}}",
+        "headerParametersJson": "={\n\"client_id\": \"uclic_jp_fc029edfef\",\n\"client_auth_key\": \"0yhu1upMoqN9Yc-hA_VVW0V4eMIRZqPfRs9fWYEih7c\",\n\"Content-Type\": \"application/json\"\n}"
+      },
+      "name": "JobGether Indeed Linkedin Remote Title - Not URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "application": "app5A0ftasLAX1JSR",
+        "table": "tblfuzgvysDnWHanR",
+        "options": {}
+      },
+      "name": "Airtable1",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -160
+      ],
+      "credentials": {
+        "airtableApi": {
+          "id": "3",
+          "name": "Airtable account"
+        }
+      },
+      "disabled": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "seconds"
+      },
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        760,
+        -160
+      ],
+      "webhookId": "f6cc09df-9a91-417c-98f8-4f75ff3e31bd"
+    },
+    {
+      "parameters": {
+        "sheetId": "13QXJN-9B8XJOYDOSmRLIweUZonCAOVyCnzexd00c9S0",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -160
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JobGether Indeed Linkedin Remote Title - Not URL": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "JobGether Indeed Linkedin Remote Title - Not URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-03-31T18:43:52.822Z",
+  "updatedAt": "2022-04-11T07:36:36.630Z",
+  "settings": {},
+  "staticData": null
+}
