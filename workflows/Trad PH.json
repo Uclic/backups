@@ -1,0 +1,148 @@
+{
+  "id": 8,
+  "name": "Trad PH",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        60,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.producthunt.com/v1/comments?search[post_id]=340539",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Tn9fIWlpD7KV8mqShPWsfOAPJMJbyi00vxCzWjGAReg"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        340,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://translate.uclic.fr/translate",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$node[\"Item Lists\"].json[\"body\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "en"
+            },
+            {
+              "name": "target",
+              "value": "fr"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        740,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "path": "ph",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {
+          "ignoreBots": true
+        }
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        140,
+        80
+      ],
+      "webhookId": "ee1447e9-dbb2-49b5-abc0-1114ccaa94d3"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "comments",
+        "options": {}
+      },
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        640,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        []
+      ]
+    },
+    "Start": {
+      "main": [
+        []
+      ]
+    },
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-04-10T19:57:33.231Z",
+  "updatedAt": "2022-05-12T18:21:33.197Z",
+  "settings": {},
+  "staticData": null
+}
