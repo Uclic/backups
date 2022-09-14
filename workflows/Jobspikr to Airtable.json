@@ -1,0 +1,397 @@
+{
+  "id": 11,
+  "name": "Jobspikr to Airtable",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "job_data",
+        "options": {}
+      },
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$node[\"Jobspikr\"].json[\"status\"]}}",
+              "operation": "equal",
+              "value2": "=success"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Ca va passer si pas premier tour\ntry {\n  // Prochain curseur\n  var next_cursor = $item(0).$node[\"Jobspikr1\"].json[\"next_cursor\"];\n  var next_cursor_for_api = '\"cursor\": '.concat(next_cursor.toString(),',');\n  \n} catch (error) {\n  var next_cursor_for_api = ''\n}\n\n\n\nreturn [{json:{'next_cursor':next_cursor_for_api}}];"
+      },
+      "name": "Function",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "next_cursor",
+              "value": "={{$node[\"Jobspikr\"].json[\"next_cursor\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        840,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.jobspikr.com/v2/data",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\"format\":\"json\",\"size\":100,{{$node[\"Function\"].json[\"next_cursor\"]}}\"dataset\":[\"job_board\"],\"search_query_json\":{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"job_title\",\"inferred_job_title\"],\"query\":\"\\\"remote\\\"\"}},{\"query_string\":{\"default_field\":\"job_type\",\"query\":\"\\\"full time\\\"\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"*\"}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Austria\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Belgium\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Croatia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Cyprus\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Czechia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Denmark\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Estonia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Finland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"France\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Germany\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Greece\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Hungary\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Ireland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Italy\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Latvia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Lithuania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Luxembourg\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Malta\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Netherlands\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Poland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Portugal\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Romania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovakia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovenia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Spain\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Sweden\\\"\"}}]}}]}},{\"range\":{\"post_date\":{\"gte\":\"{{$node[\"Yesterday\"].json[\"yesterday\"]}}\",\"lte\":\"{{$node[\"Today\"].json[\"today\"]}}\"}}},{\"query_string\":{\"default_field\":\"job_board\",\"query\":\"indeed OR Linkedin\"}}],\"must_not\":[{\"query_string\":{\"default_field\":\"job_board\",\"query\":\"company_website\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"Unspecified\"}}]}}}",
+        "headerParametersJson": "={\n\"client_id\": \"uclic_jp_fc029edfef\",\n\"client_auth_key\": \"0yhu1upMoqN9Yc-hA_VVW0V4eMIRZqPfRs9fWYEih7c\",\n\"Content-Type\": \"application/json\"\n}"
+      },
+      "name": "Jobspikr",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        720,
+        40
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "application": "appBnlOGuYKa5P0Fw",
+        "table": "tbl5UPbgFrDDtm27A",
+        "options": {
+          "typecast": true
+        }
+      },
+      "name": "Airtable",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        260
+      ],
+      "credentials": {
+        "airtableApi": {
+          "id": "6",
+          "name": "ferainayel@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "value": "={{new Date()}}",
+        "dataPropertyName": "today",
+        "toFormat": "YYYY-MM-DD",
+        "options": {}
+      },
+      "name": "Today",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "action": "calculate",
+        "value": "={{$node[\"Today\"].json[\"today\"]}}",
+        "operation": "subtract",
+        "duration": 1,
+        "dataPropertyName": "yesterday",
+        "options": {}
+      },
+      "name": "Yesterday Calculate",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        80,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "value": "={{$node[\"Yesterday Calculate\"].json[\"yesterday\"]}}",
+        "dataPropertyName": "yesterday",
+        "toFormat": "YYYY-MM-DD",
+        "options": {}
+      },
+      "name": "Yesterday",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "list",
+        "application": "appBnlOGuYKa5P0Fw",
+        "table": "tbl5UPbgFrDDtm27A",
+        "additionalOptions": {}
+      },
+      "name": "List Airtable Records",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        540
+      ],
+      "credentials": {
+        "airtableApi": {
+          "id": "6",
+          "name": "ferainayel@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "application": "appBnlOGuYKa5P0Fw",
+        "table": "tbl5UPbgFrDDtm27A",
+        "id": "={{$node[\"List Airtable Records\"].json[\"id\"]}}",
+        "options": {}
+      },
+      "name": "Delete Airtable records",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        620
+      ],
+      "credentials": {
+        "airtableApi": {
+          "id": "6",
+          "name": "ferainayel@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "name": "NoOp1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        60,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.jobspikr.com/v2/data",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\"format\":\"json\",\"size\":100,{{$node[\"Function\"].json[\"next_cursor\"]}}\"dataset\":[\"job_board\"],\"search_query_json\":{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"job_title\",\"inferred_job_title\"],\"query\":\"*\"}},{\"query_string\":{\"default_field\":\"job_type\",\"query\":\"\\\"full time\\\"\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"*\"}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Austria\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Belgium\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Croatia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Cyprus\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Czechia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Denmark\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Estonia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Finland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"France\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Germany\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Greece\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Hungary\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Ireland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Italy\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Latvia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Lithuania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Luxembourg\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Malta\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Netherlands\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Poland\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Portugal\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Romania\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovakia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Slovenia\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Spain\\\"\"}}]}},{\"bool\":{\"must\":[{\"query_string\":{\"fields\":[\"country\",\"inferred_country\"],\"query\":\"\\\"Sweden\\\"\"}}]}}]}},{\"query_string\":{\"default_field\":\"is_remote\",\"query\":true}},{\"range\":{\"post_date\":{\"gte\":\"{{$node[\"Yesterday\"].json[\"yesterday\"]}}\",\"lte\":\"{{$node[\"Today\"].json[\"today\"]}}\"}}}],\"must_not\":[{\"query_string\":{\"default_field\":\"job_board\",\"query\":\"company_website\"}},{\"query_string\":{\"default_field\":\"company_name\",\"query\":\"Unspecified\"}}]}}}",
+        "headerParametersJson": "={\n\"client_id\": \"uclic_jp_fc029edfef\",\n\"client_auth_key\": \"0yhu1upMoqN9Yc-hA_VVW0V4eMIRZqPfRs9fWYEih7c\",\n\"Content-Type\": \"application/json\"\n}"
+      },
+      "name": "Jobspikr1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function": {
+      "main": [
+        [
+          {
+            "node": "Jobspikr1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today": {
+      "main": [
+        [
+          {
+            "node": "Yesterday Calculate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yesterday Calculate": {
+      "main": [
+        [
+          {
+            "node": "Yesterday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yesterday": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Airtable Records": {
+      "main": [
+        [
+          {
+            "node": "Delete Airtable records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Airtable records": {
+      "main": [
+        [
+          {
+            "node": "NoOp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jobspikr1": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-04-12T15:28:51.638Z",
+  "updatedAt": "2022-04-12T15:28:51.638Z",
+  "settings": {},
+  "staticData": null
+}
