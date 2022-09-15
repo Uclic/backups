@@ -45,7 +45,8 @@
           "id": "1",
           "name": "Google account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -70,11 +71,11 @@
             },
             {
               "name": "linkedin",
-              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"displayed_link\"]}}"
+              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"link\"]}}"
             },
             {
               "name": "title",
-              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"snippet\"]}}"
+              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"title\"]}}"
             }
           ]
         },
@@ -105,21 +106,89 @@
       "parameters": {
         "authentication": "headerAuth",
         "requestMethod": "POST",
-        "url": "https://api.captaindata.co/v2/16c20544-8c94-4dbe-8a41-285f0dff5992/workflows/bb10288f-5840-4f63-9c15-dce85c3b12cf/schedule",
+        "url": "https://api.captaindata.co/v2/16c20544-8c94-4dbe-8a41-285f0dff5992/workflows/56fdde19-4f33-469a-9806-0074b9b241c4/schedule",
         "jsonParameters": true,
         "options": {},
-        "bodyParametersJson": "={\n\t\"inputs\": [{{$node[\"Set1\"].json[\"Url\"]}}],\n\t\"input_parameters\": {\n\t\t\"max_results\": \"1000\"\n\t}\n}"
+        "bodyParametersJson": "={\n    \"inputs\": [\n        {\n            \"linkedin_profile_url\": \"{{$node[\"Google Sheets\"].json[\"linkedin\"]}}\"\n        }\n    ],\n    \"job_name\": \"n8n\",\n    \"steps\": [\n        {\n         \"accounts\": [\n                \"40e011a0-9ef2-4b27-9271-ab8540aeeda1\"\n            ],\n            \"parameters\": {\n                \"message\": \"Hello, congrats for the launch on Product Hunt! I love it!\"\n            },\n            \"step_uid\": \"7dc15bae-69d4-4266-9f75-a621896a4050\",\n            \"template_uid\": 148\n        }\n    ]\n}"
       },
       "name": "HTTP Request1",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        800,
-        480
+        1000,
+        500
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "29",
+          "id": "13",
+          "name": "CaptainData"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "lowercaseheadline",
+              "value": "= {{$node[\"Google Sheets\"].json[\"title\"].toLowerCase()}}"
+            },
+            {
+              "name": "lowercasecompany",
+              "value": "={{$node[\"Google Sheets\"].json[\"company\"].toLowerCase()}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Set1\"].json[\"lowercaseheadline\"]}}",
+              "operation": "contains",
+              "value2": "={{$node[\"Set1\"].json[\"company\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        960,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "url": "https://api.captaindata.co/v2/16c20544-8c94-4dbe-8a41-285f0dff5992/workflows/1d1b6ca7-52d3-4a35-9f31-09420262f9ef/schedule\n\n",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n    \"inputs\": [\n        {\n            \"twitter_profile_url\": \"https://twitter.com/{{$node[\"Webhook\"].json[\"query\"][\"twitter\"]}}\"\n        }\n    ],\n    \"job_name\": \"Follow + Message\",\n    \"steps\": [\n        {\n            \"accounts\": [\n                \"fba9dc56-9843-45b1-9867-3277daba034d\"\n            ],\n            \"parameters\": {\n                \"follow\": true\n            },\n            \"step_uid\": \"8e68b247-a19e-4535-84e4-0b3b52650cac\",\n            \"template_uid\": 140\n        },\n        {\n            \"accounts\": [\n                \"fba9dc56-9843-45b1-9867-3277daba034d\"\n            ],\n            \"parameters\": {\n                \"message\": \"Keep pushing! Well done for Product Hunt\"\n            },\n            \"step_uid\": \"75d56d86-303c-45a9-a46b-365633777c84\",\n            \"template_uid\": 763\n        }\n    ]\n}"
+      },
+      "name": "TW",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -120
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "13",
           "name": "CaptainData"
         }
       }
@@ -144,6 +213,11 @@
             "node": "Google Sheets",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "TW",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -158,10 +232,48 @@
           }
         ]
       ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        []
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-09-15T07:33:43.172Z",
-  "updatedAt": "2022-09-15T09:00:31.072Z",
+  "updatedAt": "2022-09-15T13:56:56.233Z",
   "settings": {},
   "staticData": null
 }
