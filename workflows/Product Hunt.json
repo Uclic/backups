@@ -264,7 +264,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api.producthunt.com/v1/posts/all?sort_by=votes_count&order=desc&search[featured_month]={{$node[\"Mois\"].json[\"mois\"]}}&search[featured_year]={{$node[\"year\"].json[\"year\"]}}&search[featured_day]={{$node[\"day\"].json[\"day\"]}}",
+        "url": "=https://api.producthunt.com/v1/posts/all?sort_by=votes_count&order=desc&search[featured_month]={{$node[\"Mois\"].json[\"mois\"]}}&search[featured_year]={{$node[\"year\"].json[\"year\"]}}&search[featured_day]={{$node[\"day\"].json[\"day\"]-2}}",
         "options": {},
         "headerParametersUi": {
           "parameter": [
@@ -744,7 +744,7 @@
     }
   },
   "createdAt": "2022-04-01T19:28:05.977Z",
-  "updatedAt": "2022-09-15T14:07:29.162Z",
+  "updatedAt": "2022-09-15T18:32:40.872Z",
   "settings": {},
   "staticData": null
 }
