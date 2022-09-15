@@ -9,8 +9,8 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        240,
-        300
+        220,
+        360
       ]
     },
     {
@@ -22,8 +22,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        460,
-        300
+        220,
+        160
       ],
       "webhookId": "51c4fa01-4647-4b87-9940-9a00faf6c8de"
     },
@@ -37,13 +37,90 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        680,
-        300
+        840,
+        160
       ],
       "credentials": {
         "googleApi": {
           "id": "1",
           "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "fullname",
+              "value": "={{$node[\"Webhook\"].json[\"query\"][\"fullname\"]}}"
+            },
+            {
+              "name": "company",
+              "value": "={{$node[\"Webhook\"].json[\"query\"][\"company\"]}}"
+            },
+            {
+              "name": "twitter",
+              "value": "={{$node[\"Webhook\"].json[\"query\"][\"twitter\"]}}"
+            },
+            {
+              "name": "phprofil",
+              "value": "={{$node[\"Webhook\"].json[\"query\"][\"phprofil\"]}}"
+            },
+            {
+              "name": "linkedin",
+              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"displayed_link\"]}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$node[\"HTTP Request\"].json[\"organic_results\"][0][\"snippet\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        640,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.scaleserp.com/search?api_key=941358FC66CE4E2A80948DD0C56C2E86&q=site%3Alinkedin.com%2Fin%2F+{{$node[\"Webhook\"].json[\"query\"][\"fullname\"]}}+{{$node[\"Webhook\"].json[\"query\"][\"company\"]}}",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        420,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "url": "https://api.captaindata.co/v2/16c20544-8c94-4dbe-8a41-285f0dff5992/workflows/bb10288f-5840-4f63-9c15-dce85c3b12cf/schedule",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n\t\"inputs\": [{{$node[\"Set1\"].json[\"Url\"]}}],\n\t\"input_parameters\": {\n\t\t\"max_results\": \"1000\"\n\t}\n}"
+      },
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        800,
+        480
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "29",
+          "name": "CaptainData"
         }
       }
     }
@@ -53,7 +130,29 @@
       "main": [
         [
           {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
             "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Set",
             "type": "main",
             "index": 0
           }
@@ -62,7 +161,7 @@
     }
   },
   "createdAt": "2022-09-15T07:33:43.172Z",
-  "updatedAt": "2022-09-15T07:44:10.472Z",
+  "updatedAt": "2022-09-15T09:00:31.072Z",
   "settings": {},
   "staticData": null
 }
