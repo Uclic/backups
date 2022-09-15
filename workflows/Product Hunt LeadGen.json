@@ -1,0 +1,68 @@
+{
+  "id": 21,
+  "name": "Product Hunt LeadGen",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "path": "51c4fa01-4647-4b87-9940-9a00faf6c8de",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "webhookId": "51c4fa01-4647-4b87-9940-9a00faf6c8de"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "144T4EojoiYvSKireixDAu3f_aPVOfmYCPIrxbEBWUVw",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-09-15T07:33:43.172Z",
+  "updatedAt": "2022-09-15T07:44:10.472Z",
+  "settings": {},
+  "staticData": null
+}
