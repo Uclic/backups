@@ -22,8 +22,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        220,
-        160
+        -220,
+        140
       ],
       "webhookId": "51c4fa01-4647-4b87-9940-9a00faf6c8de"
     },
@@ -181,8 +181,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        780,
-        -120
+        1220,
+        -180
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -190,6 +190,49 @@
           "name": "CaptainData"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "144T4EojoiYvSKireixDAu3f_aPVOfmYCPIrxbEBWUVw",
+        "lookupColumn": "twitter",
+        "lookupValue": "={{$node[\"Webhook\"].json[\"query\"][\"twitter\"]}}",
+        "options": {
+          "continue": true
+        }
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Google Sheets1\"].json[\"twitter\"]}}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        160,
+        180
+      ]
     }
   ],
   "connections": {
@@ -197,7 +240,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Google Sheets1",
             "type": "main",
             "index": 0
           }
@@ -209,11 +252,6 @@
         [
           {
             "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "TW",
             "type": "main",
             "index": 0
           }
@@ -236,6 +274,11 @@
         [
           {
             "node": "Set1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TW",
             "type": "main",
             "index": 0
           }
@@ -263,10 +306,33 @@
           }
         ]
       ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
     }
   },
   "createdAt": "2022-09-15T07:33:43.172Z",
-  "updatedAt": "2022-09-15T14:08:10.596Z",
+  "updatedAt": "2022-09-15T19:36:22.074Z",
   "settings": {},
   "staticData": null
 }
