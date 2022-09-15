@@ -1,0 +1,22 @@
+{
+  "id": 22,
+  "name": "SEO Twitter",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "createdAt": "2022-09-15T19:48:55.990Z",
+  "updatedAt": "2022-09-15T19:48:55.990Z",
+  "settings": {},
+  "staticData": null
+}
