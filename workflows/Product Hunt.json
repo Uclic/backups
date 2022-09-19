@@ -498,9 +498,29 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        220,
-        -140
+        120,
+        -280
       ]
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"HTTP Request1\"].json[\"post\"][\"description\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {}
+      },
+      "name": "Content1",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -60
+      ],
+      "credentials": {
+        "deepLApi": {
+          "id": "11",
+          "name": "DeepL account"
+        }
+      }
     }
   ],
   "connections": {
@@ -744,7 +764,7 @@
     }
   },
   "createdAt": "2022-04-01T19:28:05.977Z",
-  "updatedAt": "2022-09-15T20:26:02.203Z",
+  "updatedAt": "2022-09-19T14:50:20.900Z",
   "settings": {},
   "staticData": null
 }
