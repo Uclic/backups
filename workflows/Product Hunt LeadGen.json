@@ -155,7 +155,7 @@
             {
               "value1": "={{$node[\"Set1\"].json[\"lowercaseheadline\"]}}",
               "operation": "contains",
-              "value2": "={{$node[\"Set1\"].json[\"company\"]}}"
+              "value2": "={{$node[\"Set1\"].json[\"lowercasecompany\"]}}"
             }
           ]
         }
@@ -326,13 +326,12 @@
             "type": "main",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     }
   },
   "createdAt": "2022-09-15T07:33:43.172Z",
-  "updatedAt": "2022-09-15T19:36:22.074Z",
+  "updatedAt": "2022-09-19T14:51:22.786Z",
   "settings": {},
   "staticData": null
 }
