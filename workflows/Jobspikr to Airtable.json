@@ -1,7 +1,7 @@
 {
-  "id": 12,
+  "id": 7,
   "name": "Jobspikr to Airtable",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {},
@@ -170,8 +170,8 @@
       "type": "n8n-nodes-base.airtable",
       "typeVersion": 1,
       "position": [
-        -320,
-        540
+        140,
+        520
       ],
       "credentials": {
         "airtableApi": {
@@ -192,8 +192,8 @@
       "type": "n8n-nodes-base.airtable",
       "typeVersion": 1,
       "position": [
-        -100,
-        620
+        360,
+        600
       ],
       "credentials": {
         "airtableApi": {
@@ -208,8 +208,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        60,
-        620
+        520,
+        600
       ]
     },
     {
@@ -263,8 +263,8 @@
       "type": "n8n-nodes-base.cron",
       "typeVersion": 1,
       "position": [
-        -500,
-        540
+        -40,
+        520
       ]
     }
   ],
@@ -420,8 +420,12 @@
       ]
     }
   },
-  "createdAt": "2022-04-13T13:41:13.827Z",
-  "updatedAt": "2022-04-13T13:41:13.827Z",
-  "settings": {},
+  "createdAt": "2022-04-08T07:00:40.502Z",
+  "updatedAt": "2022-04-13T13:58:22.463Z",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "timezone": "Europe/Paris"
+  },
   "staticData": null
 }
