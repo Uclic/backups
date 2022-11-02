@@ -1,0 +1,41 @@
+{
+  "id": 25,
+  "name": "Indexation Uclic",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT meta_value, post_title, post_modified, wp_users.user_login\nFROM wp_posts\n    LEFT JOIN wp_postmeta ON wp_posts.ID=wp_postmeta.post_id\n    LEFT JOIN wp_users ON wp_users.ID=meta_value\nWHERE wp_postmeta.meta_key='_edit_last'"
+      },
+      "name": "MySQL",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        120
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "7",
+          "name": "MySQL account"
+        }
+      }
+    }
+  ],
+  "connections": {},
+  "createdAt": "2022-11-02T08:58:11.557Z",
+  "updatedAt": "2022-11-02T08:58:45.808Z",
+  "settings": {},
+  "staticData": null
+}
