@@ -1,0 +1,22 @@
+{
+  "id": 26,
+  "name": "Generate Link",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "createdAt": "2022-11-03T19:19:25.798Z",
+  "updatedAt": "2022-11-03T19:19:25.798Z",
+  "settings": {},
+  "staticData": null
+}
