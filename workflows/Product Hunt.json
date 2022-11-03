@@ -222,7 +222,7 @@
         "options": {
           "bodyContentType": "=json"
         },
-        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"id\"]}}\", \"day\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"day\"]}}\", \"tagline\":\"{{$node[\"Title\"].json[\"text\"]}}\", \"makerswebsite_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"website_url\"]}}\", \"makersheadline\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"headline\"]}}\",\"makersname\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"name\"]}}\", \"makerswebsite_url1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"website_url\"]}}\", \"makersheadline1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"headline\"]}}\",\"makersname1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"name\"]}}\", \"makerswebsite_url2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"website_url\"]}}\", \"makersheadline2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"headline\"]}}\",\"makersname2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"name\"]}}\",\"votes_count\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"votes_count\"]}}\", \"logo\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"thumbnail\"][\"image_url\"]}}\",\"screenshot_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"screenshot_url\"][\"300px\"]}}\" } }"
+        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"id\"]}}\", \"day\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"day\"]}}\", \"tagline\":\"{{$node[\"Title\"].json[\"text\"]}}\", \"makerswebsite_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"website_url\"]}}\", \"makersheadline\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"headline\"]}}\",\"makersname\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"name\"]}}\", \"makerstwitter_username\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"twitter_username\"]}}\", \"makerswebsite_url1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"website_url\"]}}\", \"makersheadline1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"headline\"]}}\",\"makersname1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"name\"]}}\", \"makerswebsite_url2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"website_url\"]}}\", \"makersheadline2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"headline\"]}}\",\"makersname2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"name\"]}}\",\"votes_count\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"votes_count\"]}}\", \"logo\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"thumbnail\"][\"image_url\"]}}\",\"screenshot_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"screenshot_url\"][\"300px\"]}}\" } }"
       },
       "name": "WP3",
       "type": "n8n-nodes-base.httpRequest",
@@ -335,8 +335,7 @@
           "id": "1",
           "name": "Google account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -764,7 +763,7 @@
     }
   },
   "createdAt": "2022-04-01T19:28:05.977Z",
-  "updatedAt": "2022-11-03T19:42:01.145Z",
+  "updatedAt": "2022-11-03T20:35:02.154Z",
   "settings": {},
   "staticData": null
 }
