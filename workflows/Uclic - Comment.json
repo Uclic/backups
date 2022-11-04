@@ -1,0 +1,216 @@
+{
+  "id": 28,
+  "name": "Uclic - Comment",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        20,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND pm.meta_key = 'id'"
+      },
+      "name": "MySQL1",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        180,
+        40
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "7",
+          "name": "MySQL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.producthunt.com/v1/posts/346376",
+        "options": {
+          "fullResponse": false
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Tn9fIWlpD7KV8mqShPWsfOAPJMJbyi00vxCzWjGAReg"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        240,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=post.comments",
+        "options": {}
+      },
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        460,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        680,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"user\"][\"name\"]}}"
+            },
+            {
+              "name": "Comment",
+              "value": "={{$node[\"SplitInBatches\"].json[\"body\"]}}"
+            },
+            {
+              "name": "Date",
+              "value": "={{$node[\"SplitInBatches\"].json[\"created_at\"]}}"
+            },
+            {
+              "name": "id",
+              "value": "={{$node[\"SplitInBatches\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        860,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "sheetId": "1XwxPvH-0NCe6OqUj9E12odFZwk8qEJbfCCgS0x6Hr7w",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        280
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL1": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-11-04T12:50:41.714Z",
+  "updatedAt": "2022-11-04T13:58:54.476Z",
+  "settings": {},
+  "staticData": null
+}
