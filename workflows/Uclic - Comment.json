@@ -9,8 +9,8 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        20,
-        400
+        -300,
+        380
       ]
     },
     {
@@ -22,20 +22,19 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        180,
-        40
+        -100,
+        -200
       ],
       "credentials": {
         "mySql": {
           "id": "7",
           "name": "MySQL account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
-        "url": "=https://api.producthunt.com/v1/posts/346376",
+        "url": "=https://api.producthunt.com/v1/posts/{{$node[\"SplitInBatches1\"].json[\"meta_value\"]}}",
         "options": {
           "fullResponse": false
         },
@@ -52,21 +51,30 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        240,
-        400
+        400,
+        -180
       ]
     },
     {
       "parameters": {
         "fieldToSplitOut": "=post.comments",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": {
+          "fields": [
+            {
+              "fieldName": "post.id"
+            },
+            {}
+          ]
+        },
         "options": {}
       },
       "name": "Item Lists",
       "type": "n8n-nodes-base.itemLists",
       "typeVersion": 1,
       "position": [
-        460,
-        400
+        620,
+        -180
       ]
     },
     {
@@ -78,8 +86,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        680,
-        400
+        880,
+        -180
       ]
     },
     {
@@ -89,19 +97,19 @@
           "string": [
             {
               "name": "Name",
-              "value": "={{$node[\"SplitInBatches\"].json[\"user\"][\"name\"]}}"
+              "value": "={{$node[\"SplitInBatches\"].json[\"post.comments\"][\"user\"][\"name\"]}}"
             },
             {
               "name": "Comment",
-              "value": "={{$node[\"SplitInBatches\"].json[\"body\"]}}"
+              "value": "={{$node[\"DeepL body\"].json[\"text\"]}}"
             },
             {
               "name": "Date",
-              "value": "={{$node[\"SplitInBatches\"].json[\"created_at\"]}}"
+              "value": "={{$node[\"SplitInBatches\"].json[\"post.comments\"][\"created_at\"]}}"
             },
             {
               "name": "id",
-              "value": "={{$node[\"SplitInBatches\"].json[\"id\"]}}"
+              "value": "={{$node[\"SplitInBatches\"].json[\"post.id\"]}}"
             }
           ]
         },
@@ -111,8 +119,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        860,
-        140
+        1360,
+        -180
       ]
     },
     {
@@ -125,13 +133,139 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        1020,
-        280
+        1840,
+        -180
       ],
       "credentials": {
         "googleApi": {
           "id": "1",
           "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"SplitInBatches\"].json[\"post.comments\"][\"body\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {}
+      },
+      "name": "DeepL body",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -180
+      ],
+      "credentials": {
+        "deepLApi": {
+          "id": "11",
+          "name": "DeepL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "1XwxPvH-0NCe6OqUj9E12odFZwk8qEJbfCCgS0x6Hr7w",
+        "lookupColumn": "id",
+        "lookupValue": "={{$node[\"SplitInBatches\"].json[\"post.id\"]}}",
+        "options": {
+          "returnAllMatches": true
+        }
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        400
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "mergeByIndex"
+      },
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "SplitInBatches1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=UPDATE `wpu9_postmeta` SET `meta_value` = 'ok' WHERE `wpu9_postmeta`.`meta_id` = 787528 AND post_id = '{{$node[\"SplitInBatches\"].json[\"post.id\"]}}'"
+      },
+      "name": "MySQL",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        -180
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "7",
+          "name": "MySQL account"
+        }
+      },
+      "notes": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '48582' AND pm.meta_key = 'comment_0_comment_name' ORDER BY `post_type` DESC\n"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "MySQL2",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        -240
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "7",
+          "name": "MySQL account"
         }
       }
     }
@@ -141,16 +275,11 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "MySQL1",
             "type": "main",
             "index": 0
           }
         ]
-      ]
-    },
-    "MySQL1": {
-      "main": [
-        []
       ]
     },
     "HTTP Request": {
@@ -179,7 +308,7 @@
       "main": [
         [
           {
-            "node": "Set",
+            "node": "DeepL body",
             "type": "main",
             "index": 0
           }
@@ -190,7 +319,7 @@
       "main": [
         [
           {
-            "node": "Google Sheets",
+            "node": "MySQL",
             "type": "main",
             "index": 0
           }
@@ -201,7 +330,80 @@
       "main": [
         [
           {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepL body": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
             "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL1": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
@@ -210,7 +412,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-04T13:58:54.476Z",
+  "updatedAt": "2022-11-04T15:57:15.757Z",
   "settings": {},
   "staticData": null
 }
