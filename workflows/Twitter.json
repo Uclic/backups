@@ -95,11 +95,6 @@
         ]
       ]
     },
-    "Start": {
-      "main": [
-        []
-      ]
-    },
     "Webhook": {
       "main": [
         [
@@ -124,7 +119,7 @@
     }
   },
   "createdAt": "2022-11-03T20:35:13.741Z",
-  "updatedAt": "2022-11-03T20:41:40.726Z",
+  "updatedAt": "2022-11-04T13:27:44.219Z",
   "settings": {},
   "staticData": null
 }
