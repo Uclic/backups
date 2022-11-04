@@ -22,7 +22,7 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        -100,
+        -240,
         -200
       ],
       "credentials": {
@@ -34,9 +34,9 @@
     },
     {
       "parameters": {
-        "url": "=https://api.producthunt.com/v1/posts/{{$node[\"Wordpress\"].json[\"meta_value\"]}}",
+        "url": "=https://api.producthunt.com/v1/comments?search[post_id]={{$node[\"Wordpress\"].json[\"meta_value\"]}}",
         "options": {
-          "fullResponse": false
+          "fullResponse": true
         },
         "headerParametersUi": {
           "parameter": [
@@ -52,12 +52,12 @@
       "typeVersion": 1,
       "position": [
         400,
-        -180
+        -200
       ]
     },
     {
       "parameters": {
-        "fieldToSplitOut": "=post.comments",
+        "fieldToSplitOut": "=body.comments",
         "include": "selectedOtherFields",
         "fieldsToInclude": {
           "fields": [
@@ -75,6 +75,7 @@
         620,
         -180
       ],
+      "alwaysOutputData": true,
       "continueOnFail": true
     },
     {
@@ -86,7 +87,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        880,
+        900,
         -180
       ]
     },
@@ -125,26 +126,6 @@
     },
     {
       "parameters": {
-        "operation": "update",
-        "sheetId": "1XwxPvH-0NCe6OqUj9E12odFZwk8qEJbfCCgS0x6Hr7w",
-        "options": {}
-      },
-      "name": "Google Sheets",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 1,
-      "position": [
-        2040,
-        -80
-      ],
-      "credentials": {
-        "googleApi": {
-          "id": "1",
-          "name": "Google account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "text": "={{$node[\"SplitInBatches\"].json[\"post.comments\"][\"body\"]}}",
         "translateTo": "FR",
         "additionalFields": {}
@@ -153,8 +134,8 @@
       "type": "n8n-nodes-base.deepL",
       "typeVersion": 1,
       "position": [
-        1160,
-        -180
+        1140,
+        -360
       ],
       "credentials": {
         "deepLApi": {
@@ -184,77 +165,21 @@
     },
     {
       "parameters": {
-        "operation": "lookup",
-        "sheetId": "1XwxPvH-0NCe6OqUj9E12odFZwk8qEJbfCCgS0x6Hr7w",
-        "lookupColumn": "id",
-        "lookupValue": "={{$node[\"SplitInBatches\"].json[\"post.id\"]}}",
-        "options": {
-          "returnAllMatches": true
-        }
-      },
-      "name": "Google Sheets1",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 1,
-      "position": [
-        1820,
-        400
-      ],
-      "credentials": {
-        "googleApi": {
-          "id": "1",
-          "name": "Google account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "mode": "mergeByIndex"
-      },
-      "name": "Merge",
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 1,
-      "position": [
-        2020,
-        420
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "=SELECT meta_value FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '{{$node[\"Wordpress\"].json[\"ID\"]}}' AND pm.meta_key = 'commentaire' ORDER BY `post_type` DESC"
-      },
-      "name": "MetaID",
-      "type": "n8n-nodes-base.mySql",
-      "typeVersion": 1,
-      "position": [
-        1540,
-        -180
-      ],
-      "credentials": {
-        "mySql": {
-          "id": "7",
-          "name": "MySQL account"
-        }
-      },
-      "notes": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '48582' AND pm.meta_key = 'comment_0_comment_name' ORDER BY `post_type` DESC\n"
-    },
-    {
-      "parameters": {
         "authentication": "basicAuth",
         "requestMethod": "POST",
-        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/11314",
+        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"Wordpress\"].json[\"ID\"]}}",
         "jsonParameters": true,
         "options": {
           "bodyContentType": "=json"
         },
-        "bodyParametersJson": "={\"acf\":{\"comment_0_comment_name\":\"ok\"}}"
+        "bodyParametersJson": "={\"acf\":{\"commentaire\":\"{{$node[\"Get\"].json[\"meta_value\"]}} <br/> {{$node[\"Set\"].json[\"Name\"]}} \"}}"
       },
       "name": "WP",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        400,
-        380
+        1760,
+        -180
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -269,7 +194,9 @@
     {
       "parameters": {
         "batchSize": 1,
-        "options": {}
+        "options": {
+          "reset": false
+        }
       },
       "name": "Wordpress",
       "type": "n8n-nodes-base.splitInBatches",
@@ -277,7 +204,75 @@
       "position": [
         120,
         -200
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT meta_value FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '{{$node[\"Wordpress\"].json[\"ID\"]}}' AND pm.meta_key = 'commentaire' ORDER BY `post_type` DESC"
+      },
+      "name": "Get",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        -180
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "mySql": {
+          "id": "7",
+          "name": "MySQL account"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '48582' AND pm.meta_key = 'comment_0_comment_name' ORDER BY `post_type` DESC\n"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Wordpress\"].json[\"meta_value\"]}}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "name": "MetaVALUE",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -380
       ]
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        360,
+        380
+      ],
+      "webhookId": "0c3bb708-e0c5-4625-84f4-267c75502389"
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        0
+      ],
+      "webhookId": "04d95f33-a9af-4209-bf3b-85a70c7ca305"
     }
   ],
   "connections": {
@@ -285,7 +280,7 @@
       "main": [
         [
           {
-            "node": "WP",
+            "node": "MySQL1",
             "type": "main",
             "index": 0
           }
@@ -318,7 +313,7 @@
       "main": [
         [
           {
-            "node": "DeepL body",
+            "node": "Wait1",
             "type": "main",
             "index": 0
           }
@@ -329,18 +324,7 @@
       "main": [
         [
           {
-            "node": "MetaID",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Sheets": {
-      "main": [
-        [
-          {
-            "node": "IF1",
+            "node": "Get",
             "type": "main",
             "index": 0
           }
@@ -369,18 +353,7 @@
         ],
         [
           {
-            "node": "Google Sheets1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Sheets1": {
-      "main": [
-        [
-          {
-            "node": "Merge",
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -402,7 +375,69 @@
       "main": [
         [
           {
+            "node": "MetaVALUE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get": {
+      "main": [
+        [
+          {
+            "node": "WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MetaVALUE": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "DeepL body",
             "type": "main",
             "index": 0
           }
@@ -411,7 +446,10 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-04T17:59:50.600Z",
-  "settings": {},
+  "updatedAt": "2022-11-04T18:37:13.520Z",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
   "staticData": null
 }
