@@ -34,7 +34,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api.producthunt.com/v1/posts/{{$node[\"SplitInBatches1\"].json[\"meta_value\"]}}",
+        "url": "=https://api.producthunt.com/v1/posts/{{$node[\"Wordpress\"].json[\"meta_value\"]}}",
         "options": {
           "fullResponse": false
         },
@@ -63,8 +63,7 @@
           "fields": [
             {
               "fieldName": "post.id"
-            },
-            {}
+            }
           ]
         },
         "options": {}
@@ -75,7 +74,8 @@
       "position": [
         620,
         -180
-      ]
+      ],
+      "continueOnFail": true
     },
     {
       "parameters": {
@@ -133,8 +133,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        1840,
-        -180
+        2040,
+        -80
       ],
       "credentials": {
         "googleApi": {
@@ -220,27 +220,14 @@
     },
     {
       "parameters": {
-        "batchSize": 1,
-        "options": {}
-      },
-      "name": "SplitInBatches1",
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 1,
-      "position": [
-        120,
-        -200
-      ]
-    },
-    {
-      "parameters": {
         "operation": "executeQuery",
-        "query": "=UPDATE `wpu9_postmeta` SET `meta_value` = 'ok' WHERE `wpu9_postmeta`.`meta_id` = 787528 AND post_id = '{{$node[\"SplitInBatches\"].json[\"post.id\"]}}'"
+        "query": "=SELECT meta_value FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '{{$node[\"Wordpress\"].json[\"ID\"]}}' AND pm.meta_key = 'commentaire' ORDER BY `post_type` DESC"
       },
-      "name": "MySQL",
+      "name": "MetaID",
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        1600,
+        1540,
         -180
       ],
       "credentials": {
@@ -253,21 +240,44 @@
     },
     {
       "parameters": {
-        "options": {}
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/11314",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "=json"
+        },
+        "bodyParametersJson": "={\"acf\":{\"comment_0_comment_name\":\"ok\"}}"
       },
-      "name": "MySQL2",
-      "type": "n8n-nodes-base.mySql",
+      "name": "WP",
+      "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        2160,
-        -240
+        400,
+        380
       ],
+      "alwaysOutputData": true,
       "credentials": {
-        "mySql": {
-          "id": "7",
-          "name": "MySQL account"
+        "httpBasicAuth": {
+          "id": "2",
+          "name": "WP Uclic.fr"
         }
-      }
+      },
+      "continueOnFail": true,
+      "notes": "https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"Wordpress\"].json[\"ID\"]}}"
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "Wordpress",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -200
+      ]
     }
   ],
   "connections": {
@@ -275,7 +285,7 @@
       "main": [
         [
           {
-            "node": "MySQL1",
+            "node": "WP",
             "type": "main",
             "index": 0
           }
@@ -319,7 +329,7 @@
       "main": [
         [
           {
-            "node": "MySQL",
+            "node": "MetaID",
             "type": "main",
             "index": 0
           }
@@ -381,14 +391,14 @@
       "main": [
         [
           {
-            "node": "SplitInBatches1",
+            "node": "Wordpress",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "SplitInBatches1": {
+    "Wordpress": {
       "main": [
         [
           {
@@ -398,21 +408,10 @@
           }
         ]
       ]
-    },
-    "MySQL": {
-      "main": [
-        [
-          {
-            "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-04T15:57:15.757Z",
+  "updatedAt": "2022-11-04T17:59:50.600Z",
   "settings": {},
   "staticData": null
 }
