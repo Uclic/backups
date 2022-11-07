@@ -1,7 +1,7 @@
 {
   "id": 28,
   "name": "Uclic - Comment",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {},
@@ -9,8 +9,8 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        -300,
-        380
+        -860,
+        80
       ]
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api.producthunt.com/v1/comments?search[post_id]={{$node[\"Wordpress\"].json[\"meta_value\"]}}",
+        "url": "=https://api.producthunt.com/v1/comments?search[post_id]={{$node[\"Wordpress\"].json[\"idph\"]}}",
         "options": {
           "fullResponse": true
         },
@@ -168,7 +168,7 @@
       "parameters": {
         "authentication": "basicAuth",
         "requestMethod": "POST",
-        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"Wordpress\"].json[\"ID\"]}}",
+        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"Wordpress\"].json[\"id\"]}}",
         "jsonParameters": true,
         "options": {
           "bodyContentType": "=json"
@@ -196,22 +196,22 @@
       "parameters": {
         "batchSize": 1,
         "options": {
-          "reset": true
+          "reset": false
         }
       },
       "name": "Wordpress",
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        120,
-        -200
+        -80,
+        -220
       ],
       "alwaysOutputData": false
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "=SELECT meta_value FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '{{$node[\"Wordpress\"].json[\"ID\"]}}' AND pm.meta_key = 'commentaire' ORDER BY `post_type` DESC"
+        "query": "=SELECT meta_value FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND p.ID = '{{$node[\"Wordpress\"].json[\"id\"]}}' AND pm.meta_key = 'commentaire' ORDER BY `post_type` DESC"
       },
       "name": "Get",
       "type": "n8n-nodes-base.mySql",
@@ -232,25 +232,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "string": [
-            {
-              "value1": "={{$node[\"Wordpress\"].json[\"meta_value\"]}}",
-              "operation": "isEmpty"
-            }
-          ]
-        }
-      },
-      "name": "MetaVALUE",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 1,
-      "position": [
-        220,
-        60
-      ]
-    },
-    {
-      "parameters": {
         "unit": "seconds"
       },
       "name": "Wait",
@@ -264,6 +245,7 @@
     },
     {
       "parameters": {
+        "amount": 2,
         "unit": "seconds"
       },
       "name": "Wait1",
@@ -350,6 +332,8 @@
     },
     {
       "parameters": {
+        "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
+        "range": "A:D",
         "options": {}
       },
       "name": "Google Sheets",
@@ -358,19 +342,103 @@
       "position": [
         -420,
         20
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "ok",
+              "value": "ok"
+            },
+            {
+              "name": "id",
+              "value": "={{$node[\"Wordpress\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -420
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
+        "range": "A:Z",
+        "options": {}
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -500
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "1",
+          "name": "Google account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Wordpress\"].json[\"ok\"]}}",
+              "operation": "contains",
+              "value2": "ok"
+            }
+          ]
+        }
+      },
+      "name": "IF3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        -100
       ]
     }
   ],
   "connections": {
     "Start": {
       "main": [
-        [
-          {
-            "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "HTTP Request": {
@@ -417,11 +485,6 @@
         ]
       ]
     },
-    "DeepL body": {
-      "main": [
-        []
-      ]
-    },
     "IF1": {
       "main": [
         [
@@ -440,16 +503,11 @@
         ]
       ]
     },
-    "MySQL1": {
-      "main": [
-        []
-      ]
-    },
     "Wordpress": {
       "main": [
         [
           {
-            "node": "MetaVALUE",
+            "node": "IF3",
             "type": "main",
             "index": 0
           }
@@ -472,24 +530,6 @@
         [
           {
             "node": "IF1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MetaVALUE": {
-      "main": [
-        [
-          {
-            "node": "IF",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -568,10 +608,61 @@
           }
         ]
       ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF3": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-07T20:55:48.506Z",
+  "updatedAt": "2022-11-07T21:30:49.663Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
