@@ -16,21 +16,22 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND pm.meta_key = 'id'"
+        "query": "SELECT * FROM wpu9_posts p INNER JOIN wpu9_postmeta pm ON p.ID = pm.post_ID WHERE post_type = 'producthunt' AND post_status = 'publish' AND pm.meta_key = 'id' ORDER BY `p`.`post_date` DESC LIMIT 1"
       },
       "name": "MySQL1",
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        -240,
-        -200
+        -460,
+        -320
       ],
       "credentials": {
         "mySql": {
           "id": "7",
           "name": "MySQL account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -126,7 +127,7 @@
     },
     {
       "parameters": {
-        "text": "={{$node[\"SplitInBatches\"].json[\"post.comments\"][\"body\"]}}",
+        "text": "={{$node[\"SplitInBatches\"].json[\"body.comments\"][\"body\"]}}",
         "translateTo": "FR",
         "additionalFields": {}
       },
@@ -134,8 +135,8 @@
       "type": "n8n-nodes-base.deepL",
       "typeVersion": 1,
       "position": [
-        1140,
-        -360
+        760,
+        -620
       ],
       "credentials": {
         "deepLApi": {
@@ -159,8 +160,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        1620,
-        400
+        1580,
+        280
       ]
     },
     {
@@ -172,13 +173,13 @@
         "options": {
           "bodyContentType": "=json"
         },
-        "bodyParametersJson": "={\"acf\":{\"commentaire\":\"{{$node[\"Get\"].json[\"meta_value\"]}} <br/> {{$node[\"Set\"].json[\"Name\"]}} \"}}"
+        "bodyParametersJson": "={\"acf\":{\"commentaire\":\"{{$node[\"Get\"].json[\"meta_value\"]}}<div class='user-info-cp'> <p class='user-name-cp'>{{$node[\"SplitInBatches\"].json[\"body.comments\"][\"user\"][\"name\"]}}</p> <p class='user-comment-date-cp'>{{$node[\"Date & Time1\"].json[\"data\"]}}</p> </div> <div class='user-comment-cp'> <p class='content-cp'>{{$node[\"LibreTranslate\"].json[\"translatedText\"]}}</p> </div>\"}}"
       },
       "name": "WP",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        1760,
+        1800,
         -180
       ],
       "alwaysOutputData": true,
@@ -195,7 +196,7 @@
       "parameters": {
         "batchSize": 1,
         "options": {
-          "reset": false
+          "reset": true
         }
       },
       "name": "Wordpress",
@@ -205,7 +206,7 @@
         120,
         -200
       ],
-      "disabled": true
+      "alwaysOutputData": false
     },
     {
       "parameters": {
@@ -244,8 +245,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        240,
-        -380
+        220,
+        60
       ]
     },
     {
@@ -273,6 +274,91 @@
         0
       ],
       "webhookId": "04d95f33-a9af-4209-bf3b-85a70c7ca305"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://translate.uclic.fr/translate",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$node[\"SplitInBatches\"].json[\"body.comments\"][\"body\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "en"
+            },
+            {
+              "name": "target",
+              "value": "fr"
+            }
+          ]
+        }
+      },
+      "name": "LibreTranslate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        -540
+      ]
+    },
+    {
+      "parameters": {
+        "value": "={{$node[\"SplitInBatches\"].json[\"body.comments\"][\"created_at\"]}}",
+        "custom": true,
+        "toFormat": "DD/MM/YYYY",
+        "options": {}
+      },
+      "name": "Date & Time1",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        -440
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"Wordpress\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        580
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        20
+      ]
     }
   ],
   "connections": {
@@ -280,7 +366,7 @@
       "main": [
         [
           {
-            "node": "MySQL1",
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
@@ -333,13 +419,7 @@
     },
     "DeepL body": {
       "main": [
-        [
-          {
-            "node": "Set",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "IF1": {
@@ -353,7 +433,7 @@
         ],
         [
           {
-            "node": "Wait",
+            "node": "IF",
             "type": "main",
             "index": 0
           }
@@ -362,13 +442,7 @@
     },
     "MySQL1": {
       "main": [
-        [
-          {
-            "node": "Wordpress",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Wordpress": {
@@ -386,7 +460,7 @@
       "main": [
         [
           {
-            "node": "WP",
+            "node": "Date & Time1",
             "type": "main",
             "index": 0
           }
@@ -408,7 +482,7 @@
       "main": [
         [
           {
-            "node": "Wordpress",
+            "node": "IF",
             "type": "main",
             "index": 0
           }
@@ -437,7 +511,58 @@
       "main": [
         [
           {
-            "node": "DeepL body",
+            "node": "LibreTranslate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LibreTranslate": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time1": {
+      "main": [
+        [
+          {
+            "node": "WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
             "type": "main",
             "index": 0
           }
@@ -446,7 +571,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-04T18:37:13.520Z",
+  "updatedAt": "2022-11-07T20:55:48.506Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
