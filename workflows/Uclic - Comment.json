@@ -421,7 +421,9 @@
         "triggerTimes": {
           "item": [
             {
-              "mode": "everyMinute"
+              "mode": "everyX",
+              "value": 5,
+              "unit": "minutes"
             }
           ]
         }
@@ -432,15 +434,11 @@
       "position": [
         -680,
         -100
-      ]
+      ],
+      "disabled": true
     }
   ],
   "connections": {
-    "Start": {
-      "main": [
-        []
-      ]
-    },
     "HTTP Request": {
       "main": [
         [
@@ -662,7 +660,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-07T21:30:49.663Z",
+  "updatedAt": "2022-11-08T08:59:45.340Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
