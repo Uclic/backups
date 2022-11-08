@@ -425,7 +425,7 @@
           "item": [
             {
               "mode": "everyX",
-              "value": 5,
+              "value": 3,
               "unit": "minutes"
             }
           ]
@@ -687,7 +687,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-08T16:39:30.412Z",
+  "updatedAt": "2022-11-08T17:22:15.295Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
