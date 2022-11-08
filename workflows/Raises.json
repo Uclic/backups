@@ -1,7 +1,7 @@
 {
   "id": 1,
   "name": "Raises",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "parameters": {},
@@ -9,8 +9,8 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        -320,
-        -260
+        780,
+        -520
       ]
     },
     {
@@ -99,7 +99,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        320,
+        460,
         40
       ]
     },
@@ -145,7 +145,7 @@
             },
             {
               "name": "Content",
-              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+              "value": "={{$node[\"DeepL\"].json[\"text\"]}}"
             },
             {
               "name": "Title",
@@ -226,9 +226,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        1160,
-        -240
+        1100,
+        -680
       ],
+      "disabled": true,
       "continueOnFail": true
     },
     {
@@ -295,7 +296,7 @@
     },
     {
       "parameters": {
-        "functionCode": "someString = $node[\"Content\"].json[\"translatedText\"];\npasok = $node[\"TranslateCompanyFix\"].json[\"translatedText\"];\nok = $node[\"Company\"].json[\"0\"];\nanotherString = [someString.replace(pasok, ok)];\nreturn [{json: anotherString}];\n"
+        "functionCode": "someString = $node[\"Content\"].json[\"translatedText\"];\npasok = $node[\"TranslateCompanyFix\"].json[\"translatedText\"];\nok = $node[\"Company\"].json[\"0\"];\nanotherString = [someString.replace(pasok, ok)];\nreturn [{json: anotherString}];\n\n"
       },
       "name": "FixCompanyName",
       "type": "n8n-nodes-base.function",
@@ -303,17 +304,18 @@
       "position": [
         1720,
         -240
-      ]
+      ],
+      "disabled": true
     },
     {
       "parameters": {
-        "functionCode": "var str = $node[\"FixCompanyName\"].json[\"0\"];\nstr = [str.substring(0, str.length - 24)];\nreturn [{json: str}];\n"
+        "functionCode": "var str = $node[\"DeepL\"].json[\"text\"];\nstr = [str.substring(0, str.length - 237)];\nreturn [{json: str}];\n"
       },
       "name": "RemoveBrand",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
       "position": [
-        1900,
+        2040,
         -240
       ]
     },
@@ -386,8 +388,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        100,
-        60
+        200,
+        20
       ]
     },
     {
@@ -418,8 +420,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        560,
-        -40
+        680,
+        20
       ],
       "credentials": {
         "googleApi": {
@@ -444,8 +446,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        760,
-        -40
+        920,
+        20
       ]
     },
     {
@@ -472,7 +474,7 @@
       "credentials": {
         "httpBasicAuth": {
           "id": "2",
-          "name": "Unnamed credential"
+          "name": "WP Uclic.fr"
         }
       },
       "continueOnFail": true
@@ -541,7 +543,7 @@
             },
             {
               "name": "content",
-              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+              "value": "={{$node[\"DeepL\"].json[\"text\"]}}"
             },
             {
               "name": "status",
@@ -563,7 +565,7 @@
       "credentials": {
         "httpBasicAuth": {
           "id": "2",
-          "name": "Unnamed credential"
+          "name": "WP Uclic.fr"
         }
       }
     },
@@ -585,7 +587,7 @@
             },
             {
               "name": "content",
-              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+              "value": "={{$node[\"DeepL\"].json[\"text\"]}}"
             },
             {
               "name": "status",
@@ -607,7 +609,7 @@
       "credentials": {
         "httpBasicAuth": {
           "id": "2",
-          "name": "Unnamed credential"
+          "name": "WP Uclic.fr"
         }
       }
     },
@@ -633,7 +635,7 @@
       "credentials": {
         "httpBasicAuth": {
           "id": "2",
-          "name": "Unnamed credential"
+          "name": "WP Uclic.fr"
         }
       },
       "continueOnFail": true
@@ -660,7 +662,7 @@
       "credentials": {
         "httpBasicAuth": {
           "id": "2",
-          "name": "Unnamed credential"
+          "name": "WP Uclic.fr"
         }
       },
       "continueOnFail": true
@@ -748,7 +750,8 @@
       "position": [
         -960,
         240
-      ]
+      ],
+      "disabled": true
     },
     {
       "parameters": {
@@ -760,6 +763,40 @@
       "position": [
         -560,
         220
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"SplitInBatches\"].json[\"content\"][\"rendered\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {
+          "preserveFormatting": "1"
+        }
+      },
+      "name": "DeepL",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -440
+      ],
+      "credentials": {
+        "deepLApi": {
+          "id": "11",
+          "name": "DeepL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "var str = $node[\"DeepL\"].json[\"text\"];\nstr = [str.substring(0, str.length - 237)];\nreturn [{json: str}];\n"
+      },
+      "name": "RemoveBrand1",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        -440
       ]
     }
   ],
@@ -786,7 +823,7 @@
       "main": [
         [
           {
-            "node": "Content",
+            "node": "DeepL",
             "type": "main",
             "index": 0
           }
@@ -868,13 +905,7 @@
     },
     "Content": {
       "main": [
-        [
-          {
-            "node": "Title",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Title": {
@@ -903,7 +934,7 @@
       "main": [
         [
           {
-            "node": "RemoveBrand",
+            "node": "RemoveBrand1",
             "type": "main",
             "index": 0
           }
@@ -934,13 +965,7 @@
     },
     "Google Sheets": {
       "main": [
-        [
-          {
-            "node": "Term",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "SplitInBatches": {
@@ -1009,7 +1034,7 @@
       "main": [
         [
           {
-            "node": "IF1",
+            "node": "Request1",
             "type": "main",
             "index": 0
           }
@@ -1161,10 +1186,43 @@
           }
         ]
       ]
+    },
+    "DeepL": {
+      "main": [
+        [
+          {
+            "node": "Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RemoveBrand1": {
+      "main": [
+        [
+          {
+            "node": "RemoveBrand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-03-30T21:33:23.619Z",
-  "updatedAt": "2022-04-01T19:47:29.277Z",
+  "updatedAt": "2022-11-08T22:02:11.827Z",
   "settings": {},
   "staticData": null
 }
