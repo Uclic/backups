@@ -336,7 +336,7 @@
       "parameters": {
         "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
         "range": "A:D",
-        "dataStartRow": 235,
+        "dataStartRow": 253,
         "options": {}
       },
       "name": "Google Sheets",
@@ -687,7 +687,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-08T10:51:18.615Z",
+  "updatedAt": "2022-11-08T11:09:58.958Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
