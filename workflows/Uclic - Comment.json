@@ -336,7 +336,7 @@
       "parameters": {
         "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
         "range": "A:D",
-        "dataStartRow": 419,
+        "dataStartRow": 488,
         "options": {}
       },
       "name": "Google Sheets",
@@ -425,7 +425,7 @@
           "item": [
             {
               "mode": "everyX",
-              "value": 1,
+              "value": 5,
               "unit": "minutes"
             }
           ]
@@ -687,7 +687,7 @@
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-08T15:00:13.801Z",
+  "updatedAt": "2022-11-08T16:39:30.412Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
