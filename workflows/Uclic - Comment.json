@@ -82,13 +82,15 @@
     {
       "parameters": {
         "batchSize": 1,
-        "options": {}
+        "options": {
+          "reset": false
+        }
       },
       "name": "SplitInBatches",
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        900,
+        940,
         -180
       ]
     },
@@ -334,6 +336,7 @@
       "parameters": {
         "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
         "range": "A:D",
+        "dataStartRow": 235,
         "options": {}
       },
       "name": "Google Sheets",
@@ -422,7 +425,7 @@
           "item": [
             {
               "mode": "everyX",
-              "value": 5,
+              "value": 1,
               "unit": "minutes"
             }
           ]
@@ -434,8 +437,21 @@
       "position": [
         -680,
         -100
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "name": "Wait2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -240
       ],
-      "disabled": true
+      "webhookId": "d88d4a20-0032-48cb-b6ca-9b31fbab9d85"
     }
   ],
   "connections": {
@@ -454,7 +470,7 @@
       "main": [
         [
           {
-            "node": "SplitInBatches",
+            "node": "Wait2",
             "type": "main",
             "index": 0
           }
@@ -657,10 +673,21 @@
           }
         ]
       ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-08T08:59:45.340Z",
+  "updatedAt": "2022-11-08T10:51:18.615Z",
   "settings": {
     "saveExecutionProgress": true,
     "saveManualExecutions": true
