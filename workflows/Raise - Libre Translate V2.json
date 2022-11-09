@@ -768,8 +768,8 @@
           "values": [
             {
               "key": "item",
-              "cssSelector": "a:last-child",
-              "returnValue": "value"
+              "cssSelector": "p a",
+              "returnValue": "attribute"
             }
           ]
         },
@@ -781,8 +781,8 @@
       "type": "n8n-nodes-base.htmlExtract",
       "typeVersion": 1,
       "position": [
-        1460,
-        -1180
+        1180,
+        -1300
       ]
     },
     {
@@ -802,7 +802,7 @@
       "typeVersion": 1,
       "position": [
         980,
-        -1200
+        -1300
       ]
     },
     {
@@ -867,6 +867,52 @@
         -1560
       ],
       "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://url-to-screenshot.p.rapidapi.com/get?url={{$node[\"HTML Extract\"].json[\"item\"][\"href\"]}}&height=-1&mobile=0&allocated_time=2.0&width=1024&base64=0",
+        "responseFormat": "string",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Accept",
+              "value": "image/png"
+            },
+            {
+              "name": "X-RapidAPI-Key",
+              "value": "8d94f2d4b9msh384e09aab682e2bp173e86jsn7b448f5e8961"
+            },
+            {
+              "name": "X-RapidAPI-Host",
+              "value": "url-to-screenshot.p.rapidapi.com"
+            },
+            {
+              "name": "useQueryString",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "name": "GenerateScreen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        -1300
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Edit Image",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        -1300
+      ]
     }
   ],
   "connections": {
@@ -983,11 +1029,6 @@
         ]
       ]
     },
-    "Content": {
-      "main": [
-        []
-      ]
-    },
     "Title": {
       "main": [
         [
@@ -1019,11 +1060,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "RemoveBrand": {
-      "main": [
-        []
       ]
     },
     "Google Sheets": {
@@ -1293,10 +1329,32 @@
           }
         ]
       ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "GenerateScreen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GenerateScreen": {
+      "main": [
+        [
+          {
+            "node": "Edit Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-09T08:22:43.517Z",
-  "updatedAt": "2022-11-09T09:50:16.512Z",
+  "updatedAt": "2022-11-09T12:06:14.336Z",
   "settings": {},
   "staticData": null
 }
