@@ -746,8 +746,8 @@
       "type": "n8n-nodes-base.cron",
       "typeVersion": 1,
       "position": [
-        -1220,
-        -440
+        -980,
+        -1420
       ]
     },
     {
@@ -767,20 +767,22 @@
         "extractionValues": {
           "values": [
             {
-              "key": "key",
-              "cssSelector": "a",
-              "returnValue": "html"
+              "key": "item",
+              "cssSelector": "a:last-child",
+              "returnValue": "value"
             }
           ]
         },
-        "options": {}
+        "options": {
+          "trimValues": false
+        }
       },
       "name": "HTML Extract",
       "type": "n8n-nodes-base.htmlExtract",
       "typeVersion": 1,
       "position": [
-        1220,
-        -1100
+        1460,
+        -1180
       ]
     },
     {
@@ -789,7 +791,7 @@
           "string": [
             {
               "name": "data",
-              "value": "={{$node[\"Request\"].json[\"content\"][\"rendered\"]}}"
+              "value": "=<div class=\"wp-block-image\"> <figure class=\"alignleft size-full\"><a href=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg\"><img loading=\"lazy\" width=\"250\" height=\"250\" src=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg\" alt=\"Voila's CEO and Founder Martin Ouellet\" class=\"wp-image-246229\" srcset=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg 250w, https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet-150x150.jpeg 150w, https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet-60x60.jpeg 60w\" sizes=\"(max-width: 250px) 100vw, 250px\" /></a><figcaption>Voila&#8217;s CEO and Founder Martin Ouellet</figcaption></figure></div> <p>Some days ago, <strong><a href=\"https://voila.app/\" target=\"_blank\" rel=\"noreferrer noopener\">Voilà!</a></strong>, a Quebec City, CA-based cloud workforce management platform provider, closed its <a href=\"https://www.finsmes.com/2022/10/voila-raises-13m-in-series-a-funding.html\" target=\"_blank\" rel=\"noreferrer noopener\"><strong>CAD$13.75M Series A funding</strong></a>. In conjunction with the announcement, CEO and Founder Martin Ouellet answered our questions about the company, its product, the funding round and future plans. </p> <!--more--> <p><strong>FinSMEs: Hi Martin, can you tell us a bit more about you. What’s your</strong> <strong>Background?</strong></p> <p><strong>Martin</strong>: In the early 2000’s, I founded Taleo, a HR software that revolutionized recruitment. From there I met and bonded with several coworkers and recognized a pain point to solve in HR. I also worked on several projects that I’ve put to the test, the most Canadian of them all, a sports app that allowed me to manage my hockey team’s replacements &#8211; I was onto something already!</p> <p>This and the particular needs of scheduling in several industries sparked the interest of several long term collaborators who came along and helped adapt it in becoming Voilà!: a fully integrated employee scheduling and workforce management app.</p> <p><strong>FinSMEs: Let’s speak about Voilà! Which is the market problem do you</strong> <strong>want to solve? Which is the real opportunity?</strong></p> <p><strong>Martin</strong>: We built Voilà! to help businesses save time managing schedules while empowering employees with the flexibility to create their own schedules. </p> <p>The labor shortage is hitting hard around the world and is here to stay. What if employee mobility allowed us to take a break from hiring more staff by optimizing the available shifts for everyone who wants to make more? That’s what we do, we combat this labor shortage by optimizing employee availability and empowering employee mobility.</p> <p><strong>FinSMEs: How does it work? Which are the main features?</strong></p> <p><strong>Martin</strong>: Voilà! is a SaaS platform that provides workforce optimization tools to automate schedule management, staff replacements, as well as time and attendance tracking. The platform allows managers to maximize their use of employee availability and optimize the cost of their workforce with solutions for managing schedules, time and attendance, leave and more.</p> <p><strong>FinSMEs: What are the features differentiating the product from</strong> <strong>competitors?</strong></p> <p><strong>Martin</strong>: The platform stands out for its flexibility, which allows it to be adapted to any corporate structure including customizable options for both the employees and the platform admins. Furthermore, in a single screen we can allow workforce management from timesheets, attendance, shift scheduling to now task management and employee communication.</p> <p><strong>FinSMEs: You just raised a new funding round. Please, tell us something</strong> <strong>more about it…</strong></p> <p><strong>Martin</strong>: We’re honored to have closed our $13.75M Series A funding round, led by Walter Ventures, with participation from Desjardins Capital and Investissement Quebec. This funding will allow us to further our mission in a time where the economy is shifting and so is employment.</p> <p>To continue to expand our team as we grow we are hiring across the United States and Canada across our software and business development teams.</p> <p><strong>FinSMEs: Can you share some numbers and achievements of your business?</strong></p> <p><strong>Martin</strong>: Despite the current economic conditions, Voilà! has been able to maintain an annual growth rate of more than 300% by supporting clients such as Cook it, a meal kit pioneer, various players in the Quebec health network and SPAR Inc., a global company serving the largest retailers and consumer product companies around the world.</p> <p><strong>FinSMEs: what’s your medium-term plans?</strong></p> <p><strong>Martin</strong>: We are doubling down on our value brought to the healthcare industry to replicate the success formula we have had with Quebec&#8217;s healthcare system where we helped thousands of nurses to manage their own schedules and reduce up to 5h per week to better time manage to focus on what really matters.</p> <p>In the United States, we’re going next week to the IAAPA Expo in Orlando, the largest event of the attractions and leisure industry. With our partner, the Montreal-based Connect&amp;GO, we will be unveiling our dynamic platform addressing all the most important challenges for this particular industry.</p> <p>Finally, we’re also refining the newest version of our task management core feature to help not only manage timesheets, schedules, attendance and communications, but also to streamline onboarding and task lists so that any employee upskill can be scalable and replicable in no time for any user or manager.</p> <!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons generic via filter on the_content -->\""
             }
           ]
         },
@@ -799,9 +801,72 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        1040,
-        -1100
+        980,
+        -1200
       ]
+    },
+    {
+      "parameters": {
+        "url": "https://hackernoon.com/",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1360,
+        -1560
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "tutu",
+              "cssSelector": "a",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTML Extract2",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        1560,
+        -1560
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "item",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "a"
+            },
+            {
+              "key": "url",
+              "cssSelector": "a",
+              "returnValue": "attribute",
+              "attribute": "href"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTML Extract3",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        1760,
+        -1560
+      ],
+      "typeVersion": 1
     }
   ],
   "connections": {
@@ -920,13 +985,7 @@
     },
     "Content": {
       "main": [
-        [
-          {
-            "node": "Set3",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Title": {
@@ -1179,7 +1238,12 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Set3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
             "type": "main",
             "index": 0
           }
@@ -1207,10 +1271,32 @@
           }
         ]
       ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract2": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-09T08:22:43.517Z",
-  "updatedAt": "2022-11-09T08:40:39.591Z",
+  "updatedAt": "2022-11-09T09:50:16.512Z",
   "settings": {},
   "staticData": null
 }
