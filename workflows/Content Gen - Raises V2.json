@@ -1,0 +1,1406 @@
+{
+  "createdAt": "2022-11-21T14:01:50.678Z",
+  "updatedAt": "2022-11-21T14:02:04.701Z",
+  "id": 6,
+  "name": "Content Gen - Raises V2",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        2140
+      ],
+      "id": "3dbe09da-afe8-45e1-baba-502a1a109592"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        1840
+      ],
+      "id": "abe92a47-2397-4f76-bed9-e2ec30f27884"
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        100,
+        1860
+      ],
+      "id": "bdd567e1-b7a0-4ca4-882c-8e6ebbc8fa89"
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "key",
+              "cssSelector": ":root"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTML Extract1",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        920
+      ],
+      "id": "39ee660b-6b65-4305-bae4-4dba8eb8d10b"
+    },
+    {
+      "parameters": {
+        "functionCode": "var s = $node[\"Request\"].json[\"title\"][\"rendered\"];\ns = [s.substring(0, s.indexOf('Raises')-1)];\nreturn [{json: s}];\n"
+      },
+      "name": "Company",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        920
+      ],
+      "id": "10ebfdf8-305e-4c4e-9e76-3e72ae1aba83"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Request\"].json[\"title\"][\"rendered\"]}}",
+              "operation": "contains",
+              "value2": "$"
+            },
+            {
+              "value1": "={{$node[\"Request\"].json[\"title\"][\"rendered\"]}}",
+              "operation": "contains",
+              "value2": "Raises"
+            },
+            {
+              "value1": "={{$node[\"Request\"].json[\"title\"][\"rendered\"]}}",
+              "operation": "contains",
+              "value2": "in"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        1220
+      ],
+      "id": "ad751422-b710-4383-9a61-4ea3c2152d15"
+    },
+    {
+      "parameters": {
+        "functionCode": "var s = $node[\"Request\"].json[\"title\"][\"rendered\"];\ns = [s.substring(0, s.indexOf('in'))];\nreturn [{json: s}];\n"
+      },
+      "name": "Raises1",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        920
+      ],
+      "id": "d962489a-8391-441c-86ac-7cab30cdff52"
+    },
+    {
+      "parameters": {
+        "functionCode": "var str = $node[\"Raises1\"].json[\"0\"];\nstr = [str.substring(str.indexOf(\"Raises\") +8)];\nreturn [{json: str}];\n"
+      },
+      "name": "Raises",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        920
+      ],
+      "id": "f7b0f5fe-1b6c-4aba-ad25-6b5b56e2fb36"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "Company",
+              "value": "={{$node[\"Company\"].json[\"0\"]}}"
+            },
+            {
+              "name": "Raise",
+              "value": "={{$node[\"Raises\"].json[\"0\"]}}"
+            },
+            {
+              "name": "Type",
+              "value": "={{$node[\"Type\"].json[\"0\"]}}"
+            },
+            {
+              "name": "Content",
+              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+            },
+            {
+              "name": "Title",
+              "value": "={{$node[\"Company\"].json[\"0\"]}} lève {{$node[\"Raises\"].json[\"0\"]}} - {{$node[\"Type\"].json[\"0\"]}}"
+            },
+            {
+              "name": "ID",
+              "value": "={{$node[\"Request\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        900,
+        1160
+      ],
+      "id": "c2e06dba-8907-4d9a-9832-7b5469336a09"
+    },
+    {
+      "parameters": {
+        "functionCode": "var str = $node[\"Request\"].json[\"title\"][\"rendered\"];\nstr = [str.substring(str.indexOf(\" in \") +4)];\nreturn [{json: str}];\n"
+      },
+      "name": "Type",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        920
+      ],
+      "id": "b8d826bf-77e1-42ba-bd56-c4918145c3bc",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "data",
+              "value": "={{$node[\"Request\"].json[\"content\"][\"rendered\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        920
+      ],
+      "id": "3442e83e-7a31-4def-9487-eb7d9c22b205"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://translate.uclic.fr/translate",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$node[\"HTML Extract1\"].json[\"key\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "en"
+            },
+            {
+              "name": "target",
+              "value": "fr"
+            }
+          ]
+        }
+      },
+      "name": "Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        920
+      ],
+      "id": "488c52ba-3d9e-45a2-9b84-6c51d6e7b700",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://translate.uclic.fr/translate",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$node[\"Request\"].json[\"title\"][\"rendered\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "en"
+            },
+            {
+              "name": "target",
+              "value": "fr"
+            }
+          ]
+        }
+      },
+      "name": "Title",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        80,
+        1120
+      ],
+      "id": "1f1357ec-6b60-4415-9540-f8e85ac56527",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://translate.uclic.fr/translate",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "q",
+              "value": "={{$node[\"Company\"].json[\"0\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "en"
+            },
+            {
+              "name": "target",
+              "value": "fr"
+            }
+          ]
+        }
+      },
+      "name": "TranslateCompanyFix",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        280,
+        920
+      ],
+      "id": "38debf22-21bd-4e09-8ada-02fd8c36a73d",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "functionCode": "someString = $node[\"Content\"].json[\"translatedText\"];\npasok = $node[\"TranslateCompanyFix\"].json[\"translatedText\"];\nok = $node[\"Company\"].json[\"0\"];\nanotherString = [someString.replace(pasok, ok)];\nreturn [{json: anotherString}];\n"
+      },
+      "name": "FixCompanyName",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        480,
+        920
+      ],
+      "id": "2b09a424-dbe7-4908-8d45-3436042a5dfe"
+    },
+    {
+      "parameters": {
+        "functionCode": "var str = $node[\"FixCompanyName\"].json[\"0\"];\nstr = [str.substring(0, str.length - 24)];\nreturn [{json: str}];\n"
+      },
+      "name": "RemoveBrand",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        660,
+        920
+      ],
+      "id": "092c266f-d15d-40db-8a34-563fc00e2f4b"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "1c8kBO5x3D7QmUqo-9c1OIM-drRuDumB82tIjvZiVe2k",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        1160
+      ],
+      "id": "5e8c937d-d098-41e2-85a6-ef7ca1a7b2de",
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        -1580,
+        1460
+      ],
+      "id": "27e722d5-b7a8-4024-9ab4-093f928dfbf8"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "myTest",
+              "value": "=https://www.finsmes.com/wp-json/wp/v2/posts/{{$node[\"SplitInBatches\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        1480
+      ],
+      "id": "43e9ff83-13cf-4e71-a1bf-507648513a54"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Request\"].json[\"error\"][\"error\"][\"message\"]}}",
+              "operation": "contains",
+              "value2": "Invalid"
+            }
+          ]
+        }
+      },
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1140,
+        1220
+      ],
+      "id": "7bcc0bca-b0a8-49ba-b457-6f2fbf330c77"
+    },
+    {
+      "parameters": {
+        "url": "={{$node[\"Set1\"].json[\"myTest\"]}}",
+        "options": {}
+      },
+      "name": "Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        1480
+      ],
+      "id": "0afb6575-807b-42a0-b735-cc3b2382b4ad",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "1c8kBO5x3D7QmUqo-9c1OIM-drRuDumB82tIjvZiVe2k",
+        "lookupColumn": "ID",
+        "lookupValue": "={{$node[\"Request\"].json[\"id\"]}}",
+        "options": {
+          "continue": "=true"
+        }
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        1220
+      ],
+      "id": "ac91e845-4032-4883-a26c-c5c05a918669",
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"Google Sheets1\"].json[\"ID\"].length>0}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IFexist",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        1220
+      ],
+      "id": "c02e1ec7-572a-4365-bca5-c611182b14aa"
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/typelevee?name={{$node[\"Type\"].json[\"0\"]}}",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": []
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "Term",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        280,
+        1480
+      ],
+      "alwaysOutputData": true,
+      "id": "0a3bf6e3-18ff-4dff-b661-6388ebf7b2cd",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "id",
+              "value": "={{$node[\"Term\"].json[\"error\"][\"error\"][\"additional_data\"][0]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "SetExist",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        800,
+        1400
+      ],
+      "id": "23300a86-3e5e-4502-8bf9-dc0a45b4ae6a"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [],
+          "number": [
+            {
+              "name": "id",
+              "value": "={{$node[\"Term\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "name": "CreateIDTerm",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        800,
+        1580
+      ],
+      "alwaysOutputData": false,
+      "id": "cb9bca4c-438d-414e-822c-af3ee6bdb719"
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "https://uclic.fr/wp-json/wp/v2/levee",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "typelevee",
+              "value": "={{$node[\"SetExist\"].json[\"id\"]}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$node[\"Company\"].json[\"0\"]}} lève {{$node[\"Raises\"].json[\"0\"]}} - {{$node[\"Type\"].json[\"0\"]}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "WP2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        1400
+      ],
+      "id": "f3d0c227-1690-4684-874b-cdd99fb66d12",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "https://uclic.fr/wp-json/wp/v2/levee",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "typelevee",
+              "value": "={{$node[\"CreateIDTerm\"].json[\"id\"]}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$node[\"Company\"].json[\"0\"]}} lève {{$node[\"Raises\"].json[\"0\"]}} - {{$node[\"Type\"].json[\"0\"]}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$node[\"RemoveBrand\"].json[\"0\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "WP4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        1580
+      ],
+      "id": "5b04ecd9-e252-4060-b709-e99f08b1acd4",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/levee/{{$node[\"WP4\"].json[\"id\"]}}",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "=json"
+        },
+        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"Request\"].json[\"id\"]}}\", \"date\":\"{{$node[\"Request\"].json[\"date\"]}}\", \"company\":\"{{$node[\"Company\"].json[\"0\"]}}\", \"raise\":\"{{$node[\"Raises\"].json[\"0\"]}}\", \"type\":\"{{$node[\"Type\"].json[\"0\"]}}\",\"img\":\"{{$node[\"Request1\"].json[\"media_details\"][\"file\"]}}\" } }"
+      },
+      "name": "WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1580
+      ],
+      "alwaysOutputData": true,
+      "id": "31a76b55-88c9-4fcc-b429-7eb1cce12692",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/levee/{{$node[\"WP2\"].json[\"id\"]}}",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "=json"
+        },
+        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"Request\"].json[\"id\"]}}\", \"date\":\"{{$node[\"Request\"].json[\"date\"]}}\", \"company\":\"{{$node[\"Company\"].json[\"0\"]}}\", \"raise\":\"{{$node[\"Raises\"].json[\"0\"]}}\", \"type\":\"{{$node[\"Type\"].json[\"0\"]}}\",\"img\":\"{{$node[\"Request1\"].json[\"media_details\"][\"file\"]}}\" } }"
+      },
+      "name": "WP3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1400
+      ],
+      "alwaysOutputData": true,
+      "id": "63ae40bb-3fd9-473e-a84f-eeb4c79b1295",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [],
+          "string": [
+            {
+              "value1": "={{$node[\"Term\"].json[\"error\"][\"error\"][\"code\"]}}",
+              "operation": "contains",
+              "value2": "exis"
+            },
+            {
+              "value1": "={{$node[\"Trad Description\"].json[\"translations\"][0][\"text\"]}}"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "name": "IF4",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        600,
+        1480
+      ],
+      "id": "73fb2f71-a4d1-4e33-8a94-c8ebf837702f"
+    },
+    {
+      "parameters": {
+        "url": "={{$node[\"Request\"].json[\"_links\"][\"wp:featuredmedia\"][0][\"href\"]}}",
+        "options": {}
+      },
+      "name": "Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -1240,
+        1040
+      ],
+      "id": "6062757c-e27d-4801-bd77-2ff1e4dcb50a",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "functionCode": "const newItems = [];\nvar val = $node[\"HTTP Request\"].json[\"0\"][\"id\"]+20;\n\nfor (let i=0;i<200;i++) {\n  newItems.push({json: {number: val-i}})\n}\nreturn newItems;"
+      },
+      "name": "Function1",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1820,
+        1120
+      ],
+      "id": "2038b7b2-5780-4f5a-8e7b-f9cab8fc9238",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "https://finsmes.com/wp-json/wp/v2/posts?order=desc&status=publish&per_page=100",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -2000,
+        1380
+      ],
+      "id": "aa28a988-f5f9-4e6a-857a-aafc7dcbf612"
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 15,
+              "unit": "minutes"
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1960,
+        420
+      ],
+      "id": "dc463064-25e0-4921-839e-eb63dc703c28"
+    },
+    {
+      "parameters": {
+        "functionCode": "return items[0].json.map(item => {\n  return {\n    json: item\n  }\n});\n"
+      },
+      "name": "Function",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1800,
+        1380
+      ],
+      "id": "d6caec58-8d7a-41fa-8d7f-2c7bb5e59d45"
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "item",
+              "cssSelector": "p a",
+              "returnValue": "attribute"
+            }
+          ]
+        },
+        "options": {
+          "trimValues": false
+        }
+      },
+      "name": "HTML Extract",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [
+        200,
+        540
+      ],
+      "id": "4f968d88-b988-409f-9188-79c5a46fb8af"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "data",
+              "value": "=<div class=\"wp-block-image\"> <figure class=\"alignleft size-full\"><a href=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg\"><img loading=\"lazy\" width=\"250\" height=\"250\" src=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg\" alt=\"Voila's CEO and Founder Martin Ouellet\" class=\"wp-image-246229\" srcset=\"https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet.jpeg 250w, https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet-150x150.jpeg 150w, https://www.finsmes.com/wp-content/uploads/2022/11/martin-ouellet-60x60.jpeg 60w\" sizes=\"(max-width: 250px) 100vw, 250px\" /></a><figcaption>Voila&#8217;s CEO and Founder Martin Ouellet</figcaption></figure></div> <p>Some days ago, <strong><a href=\"https://voila.app/\" target=\"_blank\" rel=\"noreferrer noopener\">Voilà!</a></strong>, a Quebec City, CA-based cloud workforce management platform provider, closed its <a href=\"https://www.finsmes.com/2022/10/voila-raises-13m-in-series-a-funding.html\" target=\"_blank\" rel=\"noreferrer noopener\"><strong>CAD$13.75M Series A funding</strong></a>. In conjunction with the announcement, CEO and Founder Martin Ouellet answered our questions about the company, its product, the funding round and future plans. </p> <!--more--> <p><strong>FinSMEs: Hi Martin, can you tell us a bit more about you. What’s your</strong> <strong>Background?</strong></p> <p><strong>Martin</strong>: In the early 2000’s, I founded Taleo, a HR software that revolutionized recruitment. From there I met and bonded with several coworkers and recognized a pain point to solve in HR. I also worked on several projects that I’ve put to the test, the most Canadian of them all, a sports app that allowed me to manage my hockey team’s replacements &#8211; I was onto something already!</p> <p>This and the particular needs of scheduling in several industries sparked the interest of several long term collaborators who came along and helped adapt it in becoming Voilà!: a fully integrated employee scheduling and workforce management app.</p> <p><strong>FinSMEs: Let’s speak about Voilà! Which is the market problem do you</strong> <strong>want to solve? Which is the real opportunity?</strong></p> <p><strong>Martin</strong>: We built Voilà! to help businesses save time managing schedules while empowering employees with the flexibility to create their own schedules. </p> <p>The labor shortage is hitting hard around the world and is here to stay. What if employee mobility allowed us to take a break from hiring more staff by optimizing the available shifts for everyone who wants to make more? That’s what we do, we combat this labor shortage by optimizing employee availability and empowering employee mobility.</p> <p><strong>FinSMEs: How does it work? Which are the main features?</strong></p> <p><strong>Martin</strong>: Voilà! is a SaaS platform that provides workforce optimization tools to automate schedule management, staff replacements, as well as time and attendance tracking. The platform allows managers to maximize their use of employee availability and optimize the cost of their workforce with solutions for managing schedules, time and attendance, leave and more.</p> <p><strong>FinSMEs: What are the features differentiating the product from</strong> <strong>competitors?</strong></p> <p><strong>Martin</strong>: The platform stands out for its flexibility, which allows it to be adapted to any corporate structure including customizable options for both the employees and the platform admins. Furthermore, in a single screen we can allow workforce management from timesheets, attendance, shift scheduling to now task management and employee communication.</p> <p><strong>FinSMEs: You just raised a new funding round. Please, tell us something</strong> <strong>more about it…</strong></p> <p><strong>Martin</strong>: We’re honored to have closed our $13.75M Series A funding round, led by Walter Ventures, with participation from Desjardins Capital and Investissement Quebec. This funding will allow us to further our mission in a time where the economy is shifting and so is employment.</p> <p>To continue to expand our team as we grow we are hiring across the United States and Canada across our software and business development teams.</p> <p><strong>FinSMEs: Can you share some numbers and achievements of your business?</strong></p> <p><strong>Martin</strong>: Despite the current economic conditions, Voilà! has been able to maintain an annual growth rate of more than 300% by supporting clients such as Cook it, a meal kit pioneer, various players in the Quebec health network and SPAR Inc., a global company serving the largest retailers and consumer product companies around the world.</p> <p><strong>FinSMEs: what’s your medium-term plans?</strong></p> <p><strong>Martin</strong>: We are doubling down on our value brought to the healthcare industry to replicate the success formula we have had with Quebec&#8217;s healthcare system where we helped thousands of nurses to manage their own schedules and reduce up to 5h per week to better time manage to focus on what really matters.</p> <p>In the United States, we’re going next week to the IAAPA Expo in Orlando, the largest event of the attractions and leisure industry. With our partner, the Montreal-based Connect&amp;GO, we will be unveiling our dynamic platform addressing all the most important challenges for this particular industry.</p> <p>Finally, we’re also refining the newest version of our task management core feature to help not only manage timesheets, schedules, attendance and communications, but also to streamline onboarding and task lists so that any employee upskill can be scalable and replicable in no time for any user or manager.</p> <!-- AddThis Advanced Settings generic via filter on the_content --><!-- AddThis Share Buttons generic via filter on the_content -->\""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        0,
+        540
+      ],
+      "id": "032cb2cd-2b1d-4b34-8a76-cdedca12f496"
+    },
+    {
+      "parameters": {
+        "url": "https://hackernoon.com/",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        380,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "c5328f0d-2956-493c-a9df-2ef1b81e5174"
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "tutu",
+              "cssSelector": "a",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTML Extract2",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        580,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "6e0291de-71bc-478c-a68d-3329c9ac150f"
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "item",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "a"
+            },
+            {
+              "key": "url",
+              "cssSelector": "a",
+              "returnValue": "attribute",
+              "attribute": "href"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTML Extract3",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        780,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "5dc45c27-4c41-4c11-9c22-87dbe24c7dcc"
+    },
+    {
+      "parameters": {
+        "url": "=https://url-to-screenshot.p.rapidapi.com/get?url={{$node[\"HTML Extract\"].json[\"item\"][\"href\"]}}&height=-1&mobile=0&allocated_time=2.0&width=1024&base64=0",
+        "responseFormat": "string",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Accept",
+              "value": "image/png"
+            },
+            {
+              "name": "X-RapidAPI-Key",
+              "value": "8d94f2d4b9msh384e09aab682e2bp173e86jsn7b448f5e8961"
+            },
+            {
+              "name": "X-RapidAPI-Host",
+              "value": "url-to-screenshot.p.rapidapi.com"
+            },
+            {
+              "name": "useQueryString",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "name": "GenerateScreen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        400,
+        540
+      ],
+      "id": "baccbd13-6bff-4e02-bff4-19141b60151a"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Edit Image",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        580,
+        540
+      ],
+      "id": "0b93d5b2-2737-4159-ac20-7a05a40f1632"
+    }
+  ],
+  "connections": {
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract1": {
+      "main": [
+        [
+          {
+            "node": "Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company": {
+      "main": [
+        [
+          {
+            "node": "Raises1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Raises1": {
+      "main": [
+        [
+          {
+            "node": "Raises",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Raises": {
+      "main": [
+        [
+          {
+            "node": "Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Type": {
+      "main": [
+        [
+          {
+            "node": "Set2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set2": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Title": {
+      "main": [
+        [
+          {
+            "node": "TranslateCompanyFix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TranslateCompanyFix": {
+      "main": [
+        [
+          {
+            "node": "FixCompanyName",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FixCompanyName": {
+      "main": [
+        [
+          {
+            "node": "RemoveBrand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Term",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IFexist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IFexist": {
+      "main": [
+        [
+          {
+            "node": "Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Term": {
+      "main": [
+        [
+          {
+            "node": "IF4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetExist": {
+      "main": [
+        [
+          {
+            "node": "WP2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateIDTerm": {
+      "main": [
+        [
+          {
+            "node": "WP4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP2": {
+      "main": [
+        [
+          {
+            "node": "WP3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP4": {
+      "main": [
+        [
+          {
+            "node": "WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP3": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF4": {
+      "main": [
+        [
+          {
+            "node": "SetExist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CreateIDTerm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request1": {
+      "main": [
+        [
+          {
+            "node": "Company",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Set3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set3": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract2": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "GenerateScreen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GenerateScreen": {
+      "main": [
+        [
+          {
+            "node": "Edit Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "c205057edbfcca28b851b2972e33dd29"
+}
