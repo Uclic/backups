@@ -1,5 +1,7 @@
 {
-  "id": 17,
+  "createdAt": "2022-11-21T13:57:12.899Z",
+  "updatedAt": "2022-11-21T14:00:03.947Z",
+  "id": 3,
   "name": "Uclic.fr - Clean WP Page",
   "active": true,
   "nodes": [
@@ -9,9 +11,10 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        240,
-        300
-      ]
+        520,
+        80
+      ],
+      "id": "c71ec77e-1ec9-4c3b-99f8-05c17aa9397d"
     },
     {
       "parameters": {
@@ -23,12 +26,13 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        380,
-        120
+        660,
+        -100
       ],
+      "id": "c6208110-9c8e-4612-bd53-d59ef62449f5",
       "credentials": {
         "googleApi": {
-          "id": "1",
+          "id": "3",
           "name": "Google account"
         }
       },
@@ -43,9 +47,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        580,
-        120
-      ]
+        860,
+        -100
+      ],
+      "id": "2bf1d30f-b128-472a-9fd5-03cb9c7f99a5"
     },
     {
       "parameters": {
@@ -58,12 +63,13 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        1180,
-        400
+        1460,
+        180
       ],
+      "id": "a6656a26-c897-4c85-b10c-7442ffbe6c7c",
       "credentials": {
         "googleApi": {
-          "id": "1",
+          "id": "3",
           "name": "Google account"
         }
       },
@@ -85,9 +91,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        680,
-        280
-      ]
+        960,
+        60
+      ],
+      "id": "f520714a-26c2-4aef-97c2-a72c2fe8931d"
     },
     {
       "parameters": {
@@ -98,12 +105,13 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        720,
-        500
+        1000,
+        280
       ],
+      "id": "3a37285e-abc4-49c9-ba8b-5d85b42ef49a",
       "credentials": {
         "mySql": {
-          "id": "7",
+          "id": "4",
           "name": "MySQL account"
         }
       }
@@ -131,9 +139,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        1000,
-        180
-      ]
+        1280,
+        -40
+      ],
+      "id": "49959e17-7924-48e9-bdd0-32a17587a36e"
     },
     {
       "parameters": {
@@ -144,10 +153,11 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        280,
-        580
+        560,
+        360
       ],
-      "webhookId": "310bd09b-070b-4d27-9b3b-2f8439492d2a"
+      "webhookId": "310bd09b-070b-4d27-9b3b-2f8439492d2a",
+      "id": "174ad002-2e01-4573-9923-163003bb2d50"
     },
     {
       "parameters": {
@@ -163,9 +173,10 @@
       "type": "n8n-nodes-base.cron",
       "typeVersion": 1,
       "position": [
-        60,
-        140
-      ]
+        140,
+        -100
+      ],
+      "id": "f3242883-8385-4f93-8398-f46096869b87"
     }
   ],
   "connections": {
@@ -276,8 +287,9 @@
       ]
     }
   },
-  "createdAt": "2022-06-02T18:22:51.123Z",
-  "updatedAt": "2022-11-04T13:21:32.259Z",
   "settings": {},
-  "staticData": null
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "6a13244e85e429c48ce03217c5195c91"
 }
