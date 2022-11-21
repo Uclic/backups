@@ -1,5 +1,7 @@
 {
-  "id": 28,
+  "createdAt": "2022-11-21T14:00:19.495Z",
+  "updatedAt": "2022-11-21T20:57:04.082Z",
+  "id": 4,
   "name": "Uclic - Comment",
   "active": true,
   "nodes": [
@@ -9,9 +11,10 @@
       "type": "n8n-nodes-base.start",
       "typeVersion": 1,
       "position": [
-        -860,
-        80
-      ]
+        -1140,
+        960
+      ],
+      "id": "d1d469ce-82b9-4040-a6b3-9447ee731e94"
     },
     {
       "parameters": {
@@ -22,12 +25,13 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        -460,
-        -320
+        -740,
+        560
       ],
+      "id": "42f0462c-53a7-4014-bc8f-d695cec70300",
       "credentials": {
         "mySql": {
-          "id": "7",
+          "id": "4",
           "name": "MySQL account"
         }
       },
@@ -52,9 +56,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        400,
-        -200
-      ]
+        120,
+        680
+      ],
+      "id": "b32f589b-c7a7-4cdf-81d2-d187b760da1d"
     },
     {
       "parameters": {
@@ -73,10 +78,11 @@
       "type": "n8n-nodes-base.itemLists",
       "typeVersion": 1,
       "position": [
-        620,
-        -180
+        340,
+        700
       ],
       "alwaysOutputData": true,
+      "id": "80ee86e0-9170-42f2-88ea-72def8b87e09",
       "continueOnFail": true
     },
     {
@@ -90,9 +96,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        940,
-        -180
-      ]
+        660,
+        700
+      ],
+      "id": "0f9e1ef5-f0ba-4a29-8719-14179fd465d0"
     },
     {
       "parameters": {
@@ -123,9 +130,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        1360,
-        -180
-      ]
+        1080,
+        700
+      ],
+      "id": "5bba0246-afcf-4ee3-b006-61f8714d62ea"
     },
     {
       "parameters": {
@@ -137,12 +145,13 @@
       "type": "n8n-nodes-base.deepL",
       "typeVersion": 1,
       "position": [
-        760,
-        -620
+        480,
+        260
       ],
+      "id": "7fc31922-099c-4dfe-8c50-7165d46f10a8",
       "credentials": {
         "deepLApi": {
-          "id": "11",
+          "id": "2",
           "name": "DeepL account"
         }
       },
@@ -162,9 +171,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        1580,
-        280
-      ]
+        1300,
+        1160
+      ],
+      "id": "13afc342-66f3-46a9-8900-f76a7853e1d4"
     },
     {
       "parameters": {
@@ -175,20 +185,21 @@
         "options": {
           "bodyContentType": "=json"
         },
-        "bodyParametersJson": "={\"acf\":{\"commentaire\":\"{{$node[\"Get\"].json[\"meta_value\"]}}<div class='user-info-cp'> <p class='user-name-cp'>{{$node[\"SplitInBatches\"].json[\"body.comments\"][\"user\"][\"name\"]}}</p> <p class='user-comment-date-cp'>{{$node[\"Date & Time1\"].json[\"data\"]}}</p> </div> <div class='user-comment-cp'> <p class='content-cp'>{{$node[\"LibreTranslate\"].json[\"translatedText\"]}}</p> </div>\"}}"
+        "bodyParametersJson": "={\"acf\":{\"commentaire\":\"<div class='user-info-cp'> <p class='user-name-cp'>{{$node[\"SplitInBatches\"].json[\"body.comments\"][\"user\"][\"name\"]}}</p> <p class='user-comment-date-cp'>{{$node[\"Date & Time1\"].json[\"data\"]}}</p> </div> <div class='user-comment-cp'> <p class='content-cp'>{{$node[\"LibreTranslate\"].json[\"translatedText\"]}}</p> </div>\"}}"
       },
       "name": "WP",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        1800,
-        -180
+        1520,
+        700
       ],
       "alwaysOutputData": true,
+      "id": "1326a0fc-5cb2-45d1-9216-11338ca8dcea",
       "credentials": {
         "httpBasicAuth": {
-          "id": "2",
-          "name": "WP Uclic.fr"
+          "id": "1",
+          "name": "Wordpress"
         }
       },
       "continueOnFail": true,
@@ -205,10 +216,11 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 1,
       "position": [
-        -80,
-        -220
+        -360,
+        660
       ],
-      "alwaysOutputData": false
+      "alwaysOutputData": false,
+      "id": "1af261c8-f5d4-4555-b069-a861b4b17f7a"
     },
     {
       "parameters": {
@@ -219,13 +231,14 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 1,
       "position": [
-        1540,
-        -180
+        1260,
+        700
       ],
       "alwaysOutputData": true,
+      "id": "4b099b84-0fd8-4315-aa08-77b04911d986",
       "credentials": {
         "mySql": {
-          "id": "7",
+          "id": "4",
           "name": "MySQL account"
         }
       },
@@ -240,10 +253,11 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        360,
-        380
+        80,
+        1260
       ],
-      "webhookId": "0c3bb708-e0c5-4625-84f4-267c75502389"
+      "webhookId": "0c3bb708-e0c5-4625-84f4-267c75502389",
+      "id": "6173a73d-9fad-4825-b836-2c6670749132"
     },
     {
       "parameters": {
@@ -254,10 +268,11 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        1040,
-        0
+        760,
+        880
       ],
-      "webhookId": "04d95f33-a9af-4209-bf3b-85a70c7ca305"
+      "webhookId": "04d95f33-a9af-4209-bf3b-85a70c7ca305",
+      "id": "01876064-3303-4bdd-819c-ba0384174379"
     },
     {
       "parameters": {
@@ -285,9 +300,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
       "position": [
-        1140,
-        -540
-      ]
+        860,
+        340
+      ],
+      "id": "a94c72a4-6ffa-4ef4-a19c-aab22ab660b1"
     },
     {
       "parameters": {
@@ -300,9 +316,10 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 1,
       "position": [
-        1740,
-        -440
-      ]
+        1460,
+        440
+      ],
+      "id": "9749aa41-8a98-46a5-a802-ee15f1e0263f"
     },
     {
       "parameters": {
@@ -318,9 +335,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        1940,
-        580
-      ]
+        1660,
+        1460
+      ],
+      "id": "59895dcb-a03d-4b06-b8c0-08c26d7fd36a"
     },
     {
       "parameters": {},
@@ -328,27 +346,29 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        2220,
-        540
-      ]
+        1940,
+        1420
+      ],
+      "id": "5237695b-c756-4272-a3d4-54a3ad30aa26"
     },
     {
       "parameters": {
         "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
         "range": "A:D",
-        "dataStartRow": 584,
+        "dataStartRow": 1904,
         "options": {}
       },
       "name": "Google Sheets",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        -420,
-        20
+        -680,
+        840
       ],
+      "id": "27b59a48-e52c-4f65-ad07-ca8f590262e7",
       "credentials": {
         "googleApi": {
-          "id": "1",
+          "id": "3",
           "name": "Google account"
         }
       }
@@ -373,9 +393,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        120,
-        -420
-      ]
+        -160,
+        460
+      ],
+      "id": "d19a135f-e2e8-4895-bb15-aa57123f17b5"
     },
     {
       "parameters": {
@@ -388,12 +409,13 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 1,
       "position": [
-        280,
-        -500
+        0,
+        380
       ],
+      "id": "ce958202-a187-4998-a969-fba688b002cf",
       "credentials": {
         "googleApi": {
-          "id": "1",
+          "id": "3",
           "name": "Google account"
         }
       },
@@ -415,9 +437,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        0,
-        200
-      ]
+        -280,
+        1080
+      ],
+      "id": "5a9de7a4-d3d7-46e5-963e-6613aea553c1"
     },
     {
       "parameters": {
@@ -435,9 +458,10 @@
       "type": "n8n-nodes-base.cron",
       "typeVersion": 1,
       "position": [
-        -680,
-        -100
-      ]
+        -960,
+        780
+      ],
+      "id": "213f572c-5027-4d12-92ad-409eb1e98158"
     },
     {
       "parameters": {
@@ -448,10 +472,11 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        780,
-        -240
+        500,
+        640
       ],
-      "webhookId": "d88d4a20-0032-48cb-b6ca-9b31fbab9d85"
+      "webhookId": "d88d4a20-0032-48cb-b6ca-9b31fbab9d85",
+      "id": "27f9af05-0523-4870-baae-3b260b4b8246"
     }
   ],
   "connections": {
@@ -612,17 +637,6 @@
         ]
       ]
     },
-    "Google Sheets": {
-      "main": [
-        [
-          {
-            "node": "Wordpress",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Set1": {
       "main": [
         [
@@ -684,13 +698,22 @@
           }
         ]
       ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "createdAt": "2022-11-04T12:50:41.714Z",
-  "updatedAt": "2022-11-08T20:23:55.730Z",
-  "settings": {
-    "saveExecutionProgress": true,
-    "saveManualExecutions": true
-  },
-  "staticData": null
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "69a65d974bba880e461ddc5f8f660791"
 }
