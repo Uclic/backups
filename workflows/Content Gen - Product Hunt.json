@@ -1,0 +1,796 @@
+{
+  "createdAt": "2022-11-21T11:13:41.100Z",
+  "updatedAt": "2022-11-21T15:11:36.246Z",
+  "id": 1,
+  "name": "Content Gen - Product Hunt",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        240
+      ],
+      "id": "cb41f7cc-c1de-4abc-b4f7-4a669611e253"
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        580,
+        1380
+      ],
+      "id": "69eb27e9-ae11-4d2b-943f-d874d5258dec"
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/topic?name={{$node[\"SplitInBatches\"].json[\"topics\"][0][\"name\"]}}",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": []
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "Term",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        420,
+        500
+      ],
+      "alwaysOutputData": true,
+      "id": "c91123f0-ede2-4f73-82b4-fc0d0cdb3742",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "id",
+              "value": "={{$node[\"Term\"].json[\"error\"][\"error\"][\"additional_data\"][0]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "SetExist",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        680,
+        640
+      ],
+      "id": "c90c0dcc-a753-4d98-9f06-beef6c16d937"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [],
+          "number": [
+            {
+              "name": "id",
+              "value": "={{$node[\"Term\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "name": "CreateIDTerm",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        680,
+        840
+      ],
+      "alwaysOutputData": false,
+      "id": "034b0860-2ebe-4486-ba2b-0a2cf7eec319"
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "https://uclic.fr/wp-json/wp/v2/producthunt",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "topic",
+              "value": "={{$node[\"SetExist\"].json[\"id\"]}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"name\"]}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$node[\"Content\"].json[\"text\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "WP2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        860,
+        640
+      ],
+      "id": "f8d3771e-28de-4efb-960a-6b919039971b",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "https://uclic.fr/wp-json/wp/v2/producthunt",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "topic",
+              "value": "={{$node[\"CreateIDTerm\"].json[\"id\"]}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"name\"]}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$node[\"Content\"].json[\"text\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": []
+        }
+      },
+      "name": "WP4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        900,
+        840
+      ],
+      "id": "bb67192d-f992-43d5-92fe-655aabb8e4a7",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"WP4\"].json[\"id\"]}}",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "=json"
+        },
+        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"id\"]}}\", \"day\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"day\"]}}\", \"tagline\":\"{{$node[\"Title\"].json[\"text\"]}}\", \"makerswebsite_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"website_url\"]}}\", \"makersheadline\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"headline\"]}}\",\"makersname\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"name\"]}}\",\"votes_count\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"votes_count\"]}}\", \"logo\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"thumbnail\"][\"image_url\"]}}\",\"screenshot_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"screenshot_url\"][\"300px\"]}}\" } }"
+      },
+      "name": "WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        840
+      ],
+      "alwaysOutputData": true,
+      "id": "8dbb4e15-ae6c-44f0-8260-f23c8a01b173",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "requestMethod": "POST",
+        "url": "=https://uclic.fr/wp-json/wp/v2/producthunt/{{$node[\"WP2\"].json[\"id\"]}}",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "=json"
+        },
+        "bodyParametersJson": "={ \"acf\":{ \"id\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"id\"]}}\", \"day\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"day\"]}}\", \"tagline\":\"{{$node[\"Title\"].json[\"text\"]}}\", \"makerswebsite_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"website_url\"]}}\", \"makersheadline\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"headline\"]}}\",\"makersname\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"name\"]}}\", \"makerstwitter_username\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"twitter_username\"]}}\", \"makerswebsite_url1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"website_url\"]}}\", \"makersheadline1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"headline\"]}}\",\"makersname1\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][1][\"name\"]}}\", \"makerswebsite_url2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"website_url\"]}}\", \"makersheadline2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"headline\"]}}\",\"makersname2\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][2][\"name\"]}}\",\"votes_count\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"votes_count\"]}}\", \"logo\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"thumbnail\"][\"image_url\"]}}\",\"screenshot_url\":\"{{$node[\"HTTP Request1\"].json[\"post\"][\"screenshot_url\"][\"300px\"]}}\" } }"
+      },
+      "name": "WP3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        640
+      ],
+      "alwaysOutputData": true,
+      "id": "99b78a14-e72d-4d78-895b-e65f9edb6d3b",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Wordpress"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [],
+          "string": [
+            {
+              "value1": "={{$node[\"Term\"].json[\"error\"][\"message\"]}}",
+              "operation": "contains",
+              "value2": "exis"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "name": "IF4",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        440,
+        760
+      ],
+      "id": "77eb9e76-986e-4f21-b53a-f80eb75515c4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.producthunt.com/v1/posts/all?sort_by=votes_count&order=desc&search[featured_month]={{$node[\"Mois\"].json[\"mois\"]}}&search[featured_year]={{$node[\"year\"].json[\"year\"]}}&search[featured_day]={{$node[\"day\"].json[\"day\"]-1}}",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Tn9fIWlpD7KV8mqShPWsfOAPJMJbyi00vxCzWjGAReg"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        740
+      ],
+      "id": "f00ad7d7-4dd7-47f0-a97a-3b3f90bdccad"
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 8
+            },
+            {
+              "hour": 22
+            },
+            {}
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        740
+      ],
+      "id": "566f6772-3b1f-44f7-b435-a4532fc0b4e7"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "posts",
+        "options": {}
+      },
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        740
+      ],
+      "id": "ad6cce7f-4fbc-4b88-8524-a9c5ab8957bf"
+    },
+    {
+      "parameters": {
+        "sheetId": "13QXJN-9B8XJOYDOSmRLIweUZonCAOVyCnzexd00c9S0",
+        "options": {}
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        880
+      ],
+      "id": "c56ca3f4-6066-40f5-9794-30ee760f822a",
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        740
+      ],
+      "id": "b4bb6517-151d-4a00-9f5c-509a0527b0ef"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.producthunt.com/v1/posts/{{$node[\"SplitInBatches\"].json[\"id\"]}}",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Tn9fIWlpD7KV8mqShPWsfOAPJMJbyi00vxCzWjGAReg"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        480
+      ],
+      "id": "d4afd758-160a-462c-84df-c4b235155c76"
+    },
+    {
+      "parameters": {
+        "functionCode": "var date = new Date().toISOString();\nvar day = new Date().getDay();\nconst weekday = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\"];\n\nitems[0].json.date_today = date;\nitems[0].json.day_today = weekday[day];\n\nreturn items;"
+      },
+      "name": "Function",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        -1220,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "534f6538-f284-401c-91e1-d0ab33d315c9"
+    },
+    {
+      "parameters": {
+        "value": "={{$node[\"Function\"].json[\"date_today\"]}}",
+        "dataPropertyName": "mois",
+        "toFormat": "=M",
+        "options": {}
+      },
+      "name": "Mois",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        480
+      ],
+      "id": "89023e60-adb3-4fb3-8d7e-03a1e1676d37"
+    },
+    {
+      "parameters": {
+        "value": "={{$node[\"Function\"].json[\"date_today\"]}}",
+        "dataPropertyName": "year",
+        "toFormat": "=Y",
+        "options": {}
+      },
+      "name": "year",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        780
+      ],
+      "id": "05411252-9f02-4c6c-a1a4-4c11cd8db5ff"
+    },
+    {
+      "parameters": {
+        "value": "={{$node[\"Function\"].json[\"date_today\"]}}",
+        "dataPropertyName": "day",
+        "toFormat": "=D",
+        "options": {}
+      },
+      "name": "day",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 1,
+      "position": [
+        -1160,
+        660
+      ],
+      "id": "2aec59da-4d46-4645-96b1-0e4227f3e80f"
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"HTTP Request1\"].json[\"post\"][\"description\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {}
+      },
+      "name": "Content",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        160,
+        260
+      ],
+      "id": "8c0fc570-32ab-4f8b-ad1b-83eae7ce6df8",
+      "credentials": {
+        "deepLApi": {
+          "id": "2",
+          "name": "DeepL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"SplitInBatches\"].json[\"tagline\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {}
+      },
+      "name": "Title",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        440,
+        160
+      ],
+      "id": "a515468f-b177-48d6-8dbc-034c9f23eaca",
+      "credentials": {
+        "deepLApi": {
+          "id": "2",
+          "name": "DeepL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://n8n.uclic.fr/webhook/51c4fa01-4647-4b87-9940-9a00faf6c8de",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "fullname",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"name\"]}}"
+            },
+            {
+              "name": "company",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"name\"]}}"
+            },
+            {
+              "name": "twitter",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"twitter_username\"]}}"
+            },
+            {
+              "name": "phprofil",
+              "value": "={{$node[\"HTTP Request1\"].json[\"post\"][\"makers\"][0][\"username\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        220
+      ],
+      "id": "0a3f1a6d-4e1b-4e25-83af-8b4f4cca6473"
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"HTTP Request1\"].json[\"post\"][\"description\"]}}",
+        "translateTo": "FR",
+        "additionalFields": {}
+      },
+      "name": "Content1",
+      "type": "n8n-nodes-base.deepL",
+      "typeVersion": 1,
+      "position": [
+        20,
+        440
+      ],
+      "id": "df525d33-4635-4db8-9cc7-7fc32a92c847",
+      "credentials": {
+        "deepLApi": {
+          "id": "2",
+          "name": "DeepL account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Term": {
+      "main": [
+        [
+          {
+            "node": "IF4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetExist": {
+      "main": [
+        [
+          {
+            "node": "WP2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateIDTerm": {
+      "main": [
+        [
+          {
+            "node": "WP4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP2": {
+      "main": [
+        [
+          {
+            "node": "WP3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP4": {
+      "main": [
+        [
+          {
+            "node": "WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF4": {
+      "main": [
+        [
+          {
+            "node": "SetExist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CreateIDTerm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP3": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WP": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function": {
+      "main": [
+        [
+          {
+            "node": "Mois",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mois": {
+      "main": [
+        [
+          {
+            "node": "day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "year": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "day": {
+      "main": [
+        [
+          {
+            "node": "year",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content": {
+      "main": [
+        [
+          {
+            "node": "Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Title": {
+      "main": [
+        [
+          {
+            "node": "Term",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "0fa4469da325f27efb64657456da0923"
+}
