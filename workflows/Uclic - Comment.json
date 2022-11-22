@@ -1,6 +1,6 @@
 {
   "createdAt": "2022-11-21T14:00:19.495Z",
-  "updatedAt": "2022-11-21T20:57:04.082Z",
+  "updatedAt": "2022-11-22T20:29:08.147Z",
   "id": 4,
   "name": "Uclic - Comment",
   "active": true,
@@ -355,7 +355,7 @@
       "parameters": {
         "sheetId": "13JZZzlRq_QPU-h6jOC6iKxxHbUcz8GffRZjfabcub1E",
         "range": "A:D",
-        "dataStartRow": 1904,
+        "dataStartRow": 2335,
         "options": {}
       },
       "name": "Google Sheets",
@@ -448,7 +448,7 @@
           "item": [
             {
               "mode": "everyX",
-              "value": 3,
+              "value": 6,
               "unit": "minutes"
             }
           ]
@@ -715,5 +715,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "69a65d974bba880e461ddc5f8f660791"
+  "hash": "fcd03cd5fab017a248ab3c4506cd70fa"
 }
