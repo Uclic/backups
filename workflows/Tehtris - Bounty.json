@@ -1,6 +1,6 @@
 {
   "createdAt": "2022-11-22T20:29:46.598Z",
-  "updatedAt": "2022-11-22T20:44:07.584Z",
+  "updatedAt": "2022-11-22T21:53:37.333Z",
   "id": 10,
   "name": "Tehtris - Bounty",
   "active": false,
@@ -22,34 +22,6 @@
       "position": [
         -420,
         40
-      ]
-    },
-    {
-      "parameters": {
-        "url": "https://bugcrowd.com/programs.json?joinable[]=false&waitlistable[]=false&sort[]=promoted-desc&hidden[]=false&page[]=2",
-        "options": {}
-      },
-      "id": "7dd5e77d-1fee-43d2-8154-cf9d35595fa8",
-      "name": "HTTP Request",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 3,
-      "position": [
-        120,
-        180
-      ]
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "=programs",
-        "options": {}
-      },
-      "id": "f088bc76-011b-4327-82a6-247dfe3c2db3",
-      "name": "Item Lists",
-      "type": "n8n-nodes-base.itemLists",
-      "typeVersion": 1,
-      "position": [
-        340,
-        180
       ]
     },
     {
@@ -144,31 +116,37 @@
           "name": "Google account"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/main/data/intigriti_data.json",
+        "options": {}
+      },
+      "id": "7dd5e77d-1fee-43d2-8154-cf9d35595fa8",
+      "name": "HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "programs",
+        "options": {}
+      },
+      "id": "994e2e9f-1190-4464-87d1-4d1272d32026",
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        60,
+        40
+      ]
     }
   ],
   "connections": {
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Item Lists",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Item Lists": {
-      "main": [
-        [
-          {
-            "node": "SplitInBatches",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "SplitInBatches": {
       "main": [
         [
@@ -195,7 +173,18 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
             "type": "main",
             "index": 0
           }
@@ -207,5 +196,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "7e12c3f298b3750fdfdcd5282607f1d3"
+  "hash": "85bb83a51adf07b0dd6010560c4a2945"
 }
