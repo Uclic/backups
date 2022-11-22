@@ -1,0 +1,211 @@
+{
+  "createdAt": "2022-11-22T20:29:46.598Z",
+  "updatedAt": "2022-11-22T20:44:07.584Z",
+  "id": 10,
+  "name": "Tehtris - Bounty",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "id": "c0cdefd4-96ad-4b45-abc8-bd2ffe072395",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bugcrowd.com/programs.json?joinable[]=false&waitlistable[]=false&sort[]=promoted-desc&hidden[]=false&page[]=2",
+        "options": {}
+      },
+      "id": "7dd5e77d-1fee-43d2-8154-cf9d35595fa8",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        120,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=programs",
+        "options": {}
+      },
+      "id": "f088bc76-011b-4327-82a6-247dfe3c2db3",
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [
+        340,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "a3907ca2-52b6-4114-9667-1b8a257b9a6e",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        560,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Company",
+              "value": "={{ $json[\"name\"] }}"
+            },
+            {
+              "name": "Industry",
+              "value": "={{ $json[\"industry_name\"] }}"
+            },
+            {
+              "name": "Source",
+              "value": "BugCrowd"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "55f34d5c-2fb2-42bc-be16-62717b1e5ba7",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        780,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "=13z2EGrMF1qRUQd4wli2mhP7HDIYLEDkR2vSwoN9a5Eo",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13z2EGrMF1qRUQd4wli2mhP7HDIYLEDkR2vSwoN9a5Eo/edit#gid=0"
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Company",
+              "fieldValue": "={{ $json[\"Company\"] }}"
+            },
+            {
+              "fieldId": "Industry",
+              "fieldValue": "={{ $json[\"Industry\"] }}"
+            },
+            {
+              "fieldId": "Source",
+              "fieldValue": "={{ $json[\"Source\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "79cf7237-bd5f-4652-a73a-daa69f9232ac",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        180
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "7e12c3f298b3750fdfdcd5282607f1d3"
+}
