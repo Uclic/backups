@@ -1,22 +1,60 @@
 {
-  "id": 13,
+  "createdAt": "2022-11-28T09:17:03.436Z",
+  "updatedAt": "2022-11-28T09:29:36.533Z",
+  "id": 12,
   "name": "My workflow",
-  "active": false,
+  "active": true,
   "nodes": [
     {
-      "parameters": {},
-      "name": "Start",
-      "type": "n8n-nodes-base.start",
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.uclic.co/generate-html?",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"imageUrl\":\"https://www.careergirls.org/wp-content/uploads/2015/06/Astronaut_1920x1080.jpg\",\n   \"firstname\":\"Rami\",\n   \"lastname\":\"AlKayyali\",\n   \"company\":\"\",\n   \"text\":\"<strong>Rami <br/><br/> Attempting </br>the impossible</strong>\",\n   \"textSize\":\"42\",\n   \"activeFontFamily\":\"Barlow\",\n   \"lineHeight\":43,\n   \"textColor\":\"#e6e6e6\",\n   \"offsetX\":32,\n   \"offsetY\":95,\n   \"subject\":\"Rami, It's time to crack your leadgen 🔥\",\n   \"redirection\":\"https://uclic.co\",\n   \"key\":\"1878902aa6cbbb910ddf289d4dc06a3e0542d7b4\",\n   \"variables\":[\n   \n   ]\n}",
+        "options": {}
+      },
+      "id": "b9386870-cea7-49ff-ba2c-8cf263b02582",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "path": "uclic",
+        "options": {}
+      },
+      "id": "fd1d034f-1acd-42ca-8c28-3da896da230a",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        240,
-        300
-      ]
+        580,
+        240
+      ],
+      "webhookId": "9263598c-585d-4983-8c34-a26213b51c18"
     }
   ],
-  "connections": {},
-  "createdAt": "2022-04-26T19:44:39.314Z",
-  "updatedAt": "2022-04-26T19:44:39.314Z",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {},
-  "staticData": null
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "7c137f267c64d368561c009181985935"
 }
