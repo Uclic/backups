@@ -1,6 +1,6 @@
 {
   "createdAt": "2022-11-22T20:29:46.598Z",
-  "updatedAt": "2022-11-22T21:53:37.333Z",
+  "updatedAt": "2022-12-02T16:24:46.066Z",
   "id": 10,
   "name": "Tehtris - Bounty",
   "active": false,
@@ -26,101 +26,14 @@
     },
     {
       "parameters": {
-        "batchSize": 1,
-        "options": {}
-      },
-      "id": "a3907ca2-52b6-4114-9667-1b8a257b9a6e",
-      "name": "SplitInBatches",
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 1,
-      "position": [
-        560,
-        180
-      ]
-    },
-    {
-      "parameters": {
-        "keepOnlySet": true,
-        "values": {
-          "string": [
-            {
-              "name": "Company",
-              "value": "={{ $json[\"name\"] }}"
-            },
-            {
-              "name": "Industry",
-              "value": "={{ $json[\"industry_name\"] }}"
-            },
-            {
-              "name": "Source",
-              "value": "BugCrowd"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "55f34d5c-2fb2-42bc-be16-62717b1e5ba7",
-      "name": "Set",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 1,
-      "position": [
-        780,
-        180
-      ]
-    },
-    {
-      "parameters": {
-        "authentication": "serviceAccount",
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "value": "=13z2EGrMF1qRUQd4wli2mhP7HDIYLEDkR2vSwoN9a5Eo",
-          "mode": "id"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13z2EGrMF1qRUQd4wli2mhP7HDIYLEDkR2vSwoN9a5Eo/edit#gid=0"
-        },
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "Company",
-              "fieldValue": "={{ $json[\"Company\"] }}"
-            },
-            {
-              "fieldId": "Industry",
-              "fieldValue": "={{ $json[\"Industry\"] }}"
-            },
-            {
-              "fieldId": "Source",
-              "fieldValue": "={{ $json[\"Source\"] }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "79cf7237-bd5f-4652-a73a-daa69f9232ac",
-      "name": "Google Sheets",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 3,
-      "position": [
-        1000,
-        180
-      ],
-      "credentials": {
-        "googleApi": {
-          "id": "3",
-          "name": "Google account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/main/data/intigriti_data.json",
-        "options": {}
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
       },
       "id": "7dd5e77d-1fee-43d2-8154-cf9d35595fa8",
       "name": "HTTP",
@@ -133,42 +46,108 @@
     },
     {
       "parameters": {
-        "fieldToSplitOut": "programs",
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1329029926,
+          "mode": "list",
+          "cachedResultName": "Bounty",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=1329029926"
+        },
+        "dataMode": "autoMapInputData",
+        "columnToMatchOn": "id",
         "options": {}
       },
-      "id": "994e2e9f-1190-4464-87d1-4d1272d32026",
-      "name": "Item Lists",
-      "type": "n8n-nodes-base.itemLists",
+      "id": "eca38bf9-2ddc-474e-be66-6707fc5e0d04",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        880,
+        -60
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "id",
+              "value": "={{$node[\"HTTP\"].json[\"id\"]}}"
+            },
+            {
+              "name": "name",
+              "value": "={{$node[\"HTTP\"].json[\"name\"]}}"
+            },
+            {
+              "name": "company_handle",
+              "value": "={{$node[\"HTTP\"].json[\"company_handle\"]}}"
+            },
+            {
+              "name": "handle",
+              "value": "={{$node[\"HTTP\"].json[\"handle\"]}}"
+            },
+            {
+              "name": "url",
+              "value": "={{$node[\"HTTP\"].json[\"url\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$node[\"HTTP\"].json[\"status\"]}}"
+            },
+            {
+              "name": "min_bounty",
+              "value": "={{$node[\"HTTP\"].json[\"min_bounty\"][\"value\"]}}"
+            },
+            {
+              "name": "max_bounty",
+              "value": "={{$node[\"HTTP\"].json[\"max_bounty\"][\"value\"]}}"
+            },
+            {
+              "name": "targets",
+              "value": "={{$node[\"HTTP\"].json[\"targets\"][\"in_scope\"][0][\"endpoint\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2561eac0-9d4e-4c26-af87-44276c204172",
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        60,
+        100,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.scaleserp.com/search?api_key=9520585A24A54A62BBAB7F7BDC17BD0C&q=site%3Alinkedin.com%2Fin%2F+{{$node[\"HTTP\"].json[\"company_handle\"]}}+CISO",
+        "options": {}
+      },
+      "id": "48ebfe43-5727-4f99-a294-8dcde2d9d446",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        320,
         40
       ]
     }
   ],
   "connections": {
-    "SplitInBatches": {
-      "main": [
-        [
-          {
-            "node": "Set",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Set": {
-      "main": [
-        [
-          {
-            "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Schedule Trigger": {
       "main": [
         [
@@ -184,11 +163,32 @@
       "main": [
         [
           {
-            "node": "Item Lists",
+            "node": "Set1",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        []
       ]
     }
   },
@@ -196,5 +196,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "85bb83a51adf07b0dd6010560c4a2945"
+  "hash": "43bb6eab982726fca1729c304843d16c"
 }
