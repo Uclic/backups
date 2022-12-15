@@ -1,9 +1,9 @@
 {
   "createdAt": "2022-11-22T20:29:46.598Z",
-  "updatedAt": "2022-12-15T21:00:10.412Z",
+  "updatedAt": "2022-12-15T21:21:18.624Z",
   "id": 10,
   "name": "Tehtris - Bounty",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {
@@ -126,11 +126,11 @@
             },
             {
               "name": "linkedin",
-              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"displayed_link\"]}}"
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"link\"]}}"
             },
             {
               "name": "description",
-              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"snippet\"]}} {{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"snippet\"]}}"
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"snippet\"]}}"
             }
           ]
         },
@@ -297,7 +297,7 @@
           "string": [],
           "boolean": [
             {
-              "value1": "={{$node[\"Google Sheets1\"].json[\"linkedin\"].length>0}}",
+              "value1": "={{$node[\"Google Sheets1\"].json[\"linkedin\"].length>12}}",
               "value2": true
             }
           ]
@@ -453,14 +453,14 @@
       "main": [
         [
           {
-            "node": "IF1",
+            "node": "Lemlist",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Lemlist",
+            "node": "IF1",
             "type": "main",
             "index": 0
           }
@@ -472,5 +472,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "131c1bfee61351f3cb1f0b575ea66ea6"
+  "hash": "61a11ab422451100a5bd0ce9abe90563"
 }
