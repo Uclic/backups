@@ -1,0 +1,478 @@
+{
+  "createdAt": "2022-12-22T13:05:59.958Z",
+  "updatedAt": "2022-12-22T13:11:24.670Z",
+  "id": 14,
+  "name": "Tehtris - Bounty - YesWeHack",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "id": "88543a9e-327f-49ff-9ac0-ac95ba64df70",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1329029926,
+          "mode": "list",
+          "cachedResultName": "Bounty",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=1329029926"
+        },
+        "dataMode": "autoMapInputData",
+        "columnToMatchOn": "id",
+        "options": {}
+      },
+      "id": "d9eac72f-b2cb-4194-8704-f8ca8f0bfe2a",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        940,
+        -160
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "id",
+              "value": "={{$node[\"SplitInBatches\"].json[\"id\"]}}"
+            },
+            {
+              "name": "name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"name\"]}}"
+            },
+            {
+              "name": "company_handle",
+              "value": "={{$node[\"SplitInBatches\"].json[\"name\"]}}"
+            },
+            {
+              "name": "handle",
+              "value": "={{$node[\"SplitInBatches\"].json[\"name\"]}}"
+            },
+            {
+              "name": "url",
+              "value": "={{$node[\"SplitInBatches\"].json[\"targets\"][\"in_scope\"][0][\"target\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$node[\"SplitInBatches\"].json[\"status\"]}}"
+            },
+            {
+              "name": "min_bounty",
+              "value": "={{$node[\"SplitInBatches\"].json[\"min_bounty\"]}}"
+            },
+            {
+              "name": "max_bounty",
+              "value": "={{$node[\"SplitInBatches\"].json[\"max_bounty\"]}}"
+            },
+            {
+              "name": "targets",
+              "value": "={{$node[\"SplitInBatches\"].json[\"targets\"][\"in_scope\"][0][\"target\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "=YesWeHack"
+            },
+            {
+              "name": "linkedin",
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"link\"]}}"
+            },
+            {
+              "name": "description",
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"snippet\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "40daa2b0-9d99-4695-9b0f-f9bcdce0bace",
+      "name": "SetIntigriti",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "b4b31a32-e0a8-4ae8-8e4c-d3d19c71f128",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+        "range": "Bounty!A:F",
+        "lookupColumn": "name",
+        "lookupValue": "={{$node[\"SplitInBatches\"].json[\"name\"]}}",
+        "options": {
+          "continue": "=true",
+          "returnAllMatches": false
+        }
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -180
+      ],
+      "id": "6a299bff-cced-499c-8f7a-5ab5fb2e5639",
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"Google Sheets\"].json[\"name\"].length>0}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IFexist",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -180
+      ],
+      "id": "17ff25a0-780c-43e9-b486-ce36b150f845"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        480,
+        300
+      ],
+      "id": "a01070a1-6d12-41a6-9a1b-76b9f24ca20f"
+    },
+    {
+      "parameters": {},
+      "id": "a53782ce-8f4f-4354-815c-8a7706797893",
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        700,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.scaleserp.com/search?api_key=9520585A24A54A62BBAB7F7BDC17BD0C&q=site%3Alinkedin.com%2Fin%2F+security+{{$node[\"SplitInBatches\"].json[\"name\"]}}&page=1&num=1",
+        "options": {}
+      },
+      "id": "c1dfd4fa-215f-43f9-bc36-2a56c92df540",
+      "name": "ScaleSerp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        580,
+        -160
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "693185df-57d5-4ce6-9228-aa80ad4fcfc9",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        300
+      ],
+      "webhookId": "bc025688-4c41-41b9-849d-9a3c6c42bbe0"
+    },
+    {
+      "parameters": {
+        "resource": "lead",
+        "campaignId": "cam_T2JkcCr7v6kvYtFm3",
+        "email": "=api{{$node[\"SplitInBatches\"].context[\"currentRunIndex\"]}}{{$node[\"SplitInBatches\"].context[\"maxRunIndex\"]}}@fake-linkedin.com",
+        "additionalFields": {
+          "linkedinUrl": "={{$node[\"Google Sheets1\"].json[\"linkedin\"]}}"
+        }
+      },
+      "id": "dde01586-6b56-4e48-af5c-ea3440027ac7",
+      "name": "Lemlist",
+      "type": "n8n-nodes-base.lemlist",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -140
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "lemlistApi": {
+          "id": "11",
+          "name": "Lemlist account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"Google Sheets1\"].json[\"linkedin\"].length>12}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IFexist1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -160
+      ],
+      "id": "eadc5427-226a-473e-bc43-ee73cbef6a1b"
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/main/data/yeswehack_data.json",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "2dc7f5f8-556e-4ffe-8708-4ddf52d3f255",
+      "name": "yeswehack_data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -280,
+        -180
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "yeswehack_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetIntigriti": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "IFexist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IFexist": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ScaleSerp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IFexist1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ScaleSerp": {
+      "main": [
+        [
+          {
+            "node": "SetIntigriti",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lemlist": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IFexist1": {
+      "main": [
+        [
+          {
+            "node": "Lemlist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "yeswehack_data": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "95c42393cfa58b7b529a2a2556ee2e09"
+}
