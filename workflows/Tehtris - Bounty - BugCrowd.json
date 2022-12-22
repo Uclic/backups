@@ -1,16 +1,16 @@
 {
   "createdAt": "2022-12-22T12:07:12.390Z",
-  "updatedAt": "2022-12-22T12:28:17.193Z",
+  "updatedAt": "2022-12-22T13:03:00.227Z",
   "id": 13,
   "name": "Tehtris - Bounty - BugCrowd",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 10
+              "triggerAtHour": 8
             }
           ]
         }
@@ -474,5 +474,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "70e92ebf9ab49b2a7a6bb1a163e1940f"
+  "hash": "971abac081a0e8535b074d9d8ab0d225"
 }
