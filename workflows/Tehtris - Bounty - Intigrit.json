@@ -1,6 +1,6 @@
 {
   "createdAt": "2022-11-22T20:29:46.598Z",
-  "updatedAt": "2022-12-22T12:06:33.194Z",
+  "updatedAt": "2022-12-22T13:05:05.880Z",
   "id": 10,
   "name": "Tehtris - Bounty - Intigrit",
   "active": true,
@@ -220,7 +220,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        400,
+        480,
         300
       ],
       "id": "dcd7a40b-81ee-457f-929e-dd7494581f0e"
@@ -473,5 +473,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "92936f826b5af80a36fc5bbacf3b5916"
+  "hash": "1e12378139462736cd4dfed317d938dc"
 }
