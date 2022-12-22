@@ -1,0 +1,477 @@
+{
+  "createdAt": "2022-11-22T20:29:46.598Z",
+  "updatedAt": "2022-12-22T12:06:33.194Z",
+  "id": 10,
+  "name": "Tehtris - Bounty - Intigrit",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "id": "c0cdefd4-96ad-4b45-abc8-bd2ffe072395",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1329029926,
+          "mode": "list",
+          "cachedResultName": "Bounty",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=1329029926"
+        },
+        "dataMode": "autoMapInputData",
+        "columnToMatchOn": "id",
+        "options": {}
+      },
+      "id": "eca38bf9-2ddc-474e-be66-6707fc5e0d04",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        940,
+        -160
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/main/data/intigriti_data.json",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "7dd5e77d-1fee-43d2-8154-cf9d35595fa8",
+      "name": "Intigriti",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -280,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "id",
+              "value": "={{$node[\"SplitInBatches\"].json[\"id\"]}}"
+            },
+            {
+              "name": "name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"name\"]}}"
+            },
+            {
+              "name": "company_handle",
+              "value": "={{$node[\"SplitInBatches\"].json[\"company_handle\"]}}"
+            },
+            {
+              "name": "handle",
+              "value": "={{$node[\"SplitInBatches\"].json[\"handle\"]}}"
+            },
+            {
+              "name": "url",
+              "value": "={{$node[\"SplitInBatches\"].json[\"url\"]}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$node[\"SplitInBatches\"].json[\"status\"]}}"
+            },
+            {
+              "name": "min_bounty",
+              "value": "={{$node[\"SplitInBatches\"].json[\"min_bounty\"][\"value\"]}}"
+            },
+            {
+              "name": "max_bounty",
+              "value": "={{$node[\"SplitInBatches\"].json[\"max_bounty\"][\"value\"]}}"
+            },
+            {
+              "name": "targets",
+              "value": "={{$node[\"SplitInBatches\"].json[\"targets\"][\"in_scope\"][0][\"endpoint\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "=Intigriti"
+            },
+            {
+              "name": "linkedin",
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"link\"]}}"
+            },
+            {
+              "name": "description",
+              "value": "={{$node[\"ScaleSerp\"].json[\"organic_results\"][0][\"snippet\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2561eac0-9d4e-4c26-af87-44276c204172",
+      "name": "SetIntigriti",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "e7b99f6c-752c-4d38-a402-f166171d6bf9",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+        "range": "Bounty!A:F",
+        "lookupColumn": "name",
+        "lookupValue": "={{$node[\"SplitInBatches\"].json[\"name\"]}}",
+        "options": {
+          "continue": "=true"
+        }
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -180
+      ],
+      "id": "4acdae8b-e54e-4607-9ba1-c10553c7e6b0",
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"Google Sheets\"].json[\"name\"].length>0}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IFexist",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -180
+      ],
+      "id": "40ab19a2-d0ec-4ee7-8ba7-3fbe1b90d4cc"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ],
+      "id": "dcd7a40b-81ee-457f-929e-dd7494581f0e"
+    },
+    {
+      "parameters": {},
+      "id": "394ee0e2-8b2f-4c4d-8347-128d47ff495e",
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        700,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.scaleserp.com/search?api_key=9520585A24A54A62BBAB7F7BDC17BD0C&q=site%3Alinkedin.com%2Fin%2F+security+{{$node[\"SplitInBatches\"].json[\"name\"]}}&page=1&num=1",
+        "options": {}
+      },
+      "id": "c0645292-5133-4f2e-8bf2-40127c9b908e",
+      "name": "ScaleSerp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        580,
+        -160
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "86abbab9-9278-4440-a974-56165b98b2c5",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        300
+      ],
+      "webhookId": "db23eeee-e1c3-483c-97b6-0b6c5ab35f10"
+    },
+    {
+      "parameters": {
+        "resource": "lead",
+        "campaignId": "cam_T2JkcCr7v6kvYtFm3",
+        "email": "=api{{$node[\"SplitInBatches\"].context[\"currentRunIndex\"]}}{{$node[\"SplitInBatches\"].context[\"maxRunIndex\"]}}@fake-linkedin.com",
+        "additionalFields": {
+          "linkedinUrl": "={{$node[\"Google Sheets1\"].json[\"linkedin\"]}}"
+        }
+      },
+      "id": "6280ac28-2ab4-4f56-998f-8e369497e411",
+      "name": "Lemlist",
+      "type": "n8n-nodes-base.lemlist",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -140
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "lemlistApi": {
+          "id": "11",
+          "name": "Lemlist account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"Google Sheets1\"].json[\"linkedin\"].length>12}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IFexist1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -160
+      ],
+      "id": "8001257f-34ff-49d5-97ed-8aa49050c45d"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Intigriti",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetIntigriti": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intigriti": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "IFexist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IFexist": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ScaleSerp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IFexist1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ScaleSerp": {
+      "main": [
+        [
+          {
+            "node": "SetIntigriti",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lemlist": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IFexist1": {
+      "main": [
+        [
+          {
+            "node": "Lemlist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "92936f826b5af80a36fc5bbacf3b5916"
+}
