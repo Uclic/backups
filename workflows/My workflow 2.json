@@ -1,6 +1,6 @@
 {
   "createdAt": "2022-12-23T22:44:02.892Z",
-  "updatedAt": "2022-12-23T22:58:28.718Z",
+  "updatedAt": "2022-12-23T23:00:56.070Z",
   "id": 15,
   "name": "My workflow 2",
   "active": true,
@@ -13,7 +13,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin\t",
-                "value": "https://dev.uclic.fr/"
+                "value": "*"
               }
             ]
           }
@@ -35,5 +35,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "0254dc33fe24422c70da6e4861661497"
+  "hash": "b0b795dbc5575f86a5d1e8a6fc2e28e5"
 }
