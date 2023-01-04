@@ -1,9 +1,9 @@
 {
   "createdAt": "2022-11-21T14:00:19.495Z",
-  "updatedAt": "2022-11-22T20:29:08.147Z",
+  "updatedAt": "2023-01-04T20:05:53.000Z",
   "id": 4,
   "name": "Uclic - Comment",
-  "active": true,
+  "active": false,
   "nodes": [
     {
       "parameters": {},
@@ -715,5 +715,5 @@
   "staticData": null,
   "pinData": {},
   "tags": [],
-  "hash": "fcd03cd5fab017a248ab3c4506cd70fa"
+  "hash": "a46272d33ed2094f101ff733216b6319"
 }
