@@ -1,0 +1,406 @@
+{
+  "createdAt": "2023-01-05T20:41:53.997Z",
+  "updatedAt": "2023-01-05T21:32:42.951Z",
+  "id": 16,
+  "name": "Hyperise Scrap",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "071ce970-2497-4f00-9cf6-f866afbb909d",
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        280,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1V6PGFouYJitpWwYmp5hP8-lLpcn7kRYydl3v8wQNEA0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 281596789,
+          "mode": "list",
+          "cachedResultName": "Feuille 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V6PGFouYJitpWwYmp5hP8-lLpcn7kRYydl3v8wQNEA0/edit#gid=281596789"
+        },
+        "options": {}
+      },
+      "id": "da82a011-0584-4c6c-b0e1-667998c27304",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        500,
+        340
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "8e1b0bb1-5a11-468d-a1c0-486b0076a5a0",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        720,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.hyperise.io/data-sources/embed-sources/prepare-source",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "*/*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "fr;q=0.5"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Origin",
+              "value": "https://app.hyperise.io"
+            },
+            {
+              "name": "Referer",
+              "value": "https://app.hyperise.io/images/edit/513988"
+            },
+            {
+              "name": "Sec-Fetch-Dest",
+              "value": "empty"
+            },
+            {
+              "name": "Sec-Fetch-Mode",
+              "value": "cors"
+            },
+            {
+              "name": "Sec-Fetch-Site",
+              "value": "same-origin"
+            },
+            {
+              "name": "Sec-GPC",
+              "value": "1"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "X-CSRF-TOKEN",
+              "value": "nHQaKc25EXfLVEC3bD6uW7AkJecq8ID4FPi3cE1w"
+            },
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            },
+            {
+              "name": "X-XSRF-TOKEN",
+              "value": "eyJpdiI6IjVheGRGT0pURGdSV3hvRjRoZlBpZ0E9PSIsInZhbHVlIjoidEZcL0VcL1ZZR0FOZ29MSnBYRjAwVVErZndGaW50cVQxVnI3clduOCtQXC9kc1h5MHRxaWVYQ0tvOUw3Wkh3cDZWRnhBa0VrenlLeWd2VGFvZzRYMjg0akE9PSIsIm1hYyI6IjYyM2JkYmQ2NTgyZTU5ODUwOGI1YzY2YjViM2ExZTAzZGVkNTFlZGExZDExN2FkZWRjYTMyNTU1M2I1NTlhMDMifQ=="
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"108\", \"Brave\";v=\"108\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"Windows\""
+            },
+            {
+              "name": "cookie",
+              "value": "customerly_jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2N1c3RvbWVybHkuaW8iLCJqdGkiOiJkYWVlMDg4MC04ZDJjLTExZWQtYTYwMC0wMjQyYWMxMjAwMDQiLCJpYXQiOjE2NzI5NDU5MzAuOTQ2NDE5LCJuYmYiOjE2NzI5NDU5MzAuOTQ2NDIzLCJleHAiOjI2NTEyNTMxMzAuOTQ2NDI1LCJ0eXBlIjo0LCJhcHAiOiI0MGUwODBkOSIsImlkIjoyODU4OTE5NX0.3jfsGgKpMXjNa8xaIzkV0ev10L8EpF2vkUSodl8FuDw;spark_token=eyJpdiI6IlwvMHcxU3dIZU1ycXNIYzg5RUtENmNRPT0iLCJ2YWx1ZSI6ImM5K1N1c3JHYnhxVlRTMnZwQkZNMWQzOU91dlwvbThKY0JJYlY5bXA1T0tGZFUxdHpTOGVsem5zXC92Qnk2Rm9PVXoxVjh6WnNFdTNHeFg0RWl4Z29ma1RYd1paNkxDV09mbUVQRzJvdGNjVnV5bFlId2RhNExpMFwvdVZvYVZzMWRDSUN1ZjZRU2FVMFVxOHFHK0pST2h3d1BzSW1sTnN2RFNUTEZmNFAycGRRSkV3MlpqRWVmRGFzRzh1dFRRcHVzQ1wvZHh2dlBzdTVYeVdRbXNpVVlGVmp1SkdKSHhmMTJWYXIrOFczSHJ5TVNaY0g0R1RxaTF2XC9yOTBRZ3JWNHhaNEhkak1OYlJHK1NWVktNb0NMOEkxc1E9PSIsIm1hYyI6IjVkN2ZmN2ZiYzA0MDE0MWM5ZjcxYmNhNDU4NGU3ZmNiNjNhMTQzMWNmNDZmODUxNjM4ZDg1YjUwZDI1OGNkMWYifQ%3D%3D;XSRF-TOKEN=eyJpdiI6IjVheGRGT0pURGdSV3hvRjRoZlBpZ0E9PSIsInZhbHVlIjoidEZcL0VcL1ZZR0FOZ29MSnBYRjAwVVErZndGaW50cVQxVnI3clduOCtQXC9kc1h5MHRxaWVYQ0tvOUw3Wkh3cDZWRnhBa0VrenlLeWd2VGFvZzRYMjg0akE9PSIsIm1hYyI6IjYyM2JkYmQ2NTgyZTU5ODUwOGI1YzY2YjViM2ExZTAzZGVkNTFlZGExZDExN2FkZWRjYTMyNTU1M2I1NTlhMDMifQ%3D%3D;hyperise_session=eyJpdiI6IlwvSGVzTXdUeTBvNHlwTVhQMzlGZEp3PT0iLCJ2YWx1ZSI6Ik9BdjM2N2c3QnR4RmQxcFV0WlNOVXc0ZXJ4cEtCcHU3TkIxdHA1S09YMGl2RlBRYmZXdnV0K3JpNkM3b0d4b1FuM3RaXC8wYnlYTzYxTjJqYUxhbGN1QT09IiwibWFjIjoiYmE1ZTUyNzk2NjdiZTY5YTYwMjY4OWY0NTEzNDI4MTMxYTI3NzQyMDYzYjlkZDFlZjExZDUyZWM3ZTAzNTRiNCJ9;"
+            },
+            {
+              "name": "cookie",
+              "value": "customerly_jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2N1c3RvbWVybHkuaW8iLCJqdGkiOiJkYWVlMDg4MC04ZDJjLTExZWQtYTYwMC0wMjQyYWMxMjAwMDQiLCJpYXQiOjE2NzI5NDU5MzAuOTQ2NDE5LCJuYmYiOjE2NzI5NDU5MzAuOTQ2NDIzLCJleHAiOjI2NTEyNTMxMzAuOTQ2NDI1LCJ0eXBlIjo0LCJhcHAiOiI0MGUwODBkOSIsImlkIjoyODU4OTE5NX0.3jfsGgKpMXjNa8xaIzkV0ev10L8EpF2vkUSodl8FuDw;spark_token=eyJpdiI6IlFwZFVPc1hJYUlpcERVTGJVV3ZaQlE9PSIsInZhbHVlIjoicFExanJKWkxXZWpMQ2lONHdDVlRTeFRUNVwvelM2WnZnbzFIQVlcL1lVajd0bTdFNUw3R293MWxsakdkQWpHb3N2aDFSNFZzVU9LM0RlVW1HcG84NkJrSE92RXJoSGkwamxKbCs2Qks3MDUyV1d0MzJLdWxKODBSM2hQS08yYUw0TG1LRkpGZ1FxNnNJM3d5SzdZMGJcL3Y2aTBPMVUwQWY3bjF5dGZpSTloUGJmMFFHWmdPVWM1RHV6UjllcjlZdVM5RFRvbytvRzhERU40YVdaSXdCdGZXUFYrUENsT2RPSlozTUlTN05lektKQ2RnSGhDT05yQlg5U1B2UVVWVHFiXC92R0JCODdVOVpqUmxiQU9KNkRSUUp3PT0iLCJtYWMiOiI1YzRjOGQxZTMxNDU0MDI4YTU5YmVjNzEyOTgxODBjMzVhZmMzMGM5OWY0NTcwM2FiOTg4NmY1NmI3ZGVjMjlkIn0%3D;XSRF-TOKEN=eyJpdiI6IjBPQjl5MVlaQ3NFTitaWjFyWXZKXC93PT0iLCJ2YWx1ZSI6IjJPYW1YSVE4ZzloN1J3cW1yMDB6ZytlNTdNeTNyVENSRkI1dDBxQmJzK0h6emVnc0MxdzFkSWw0cGYwempNaFdDc0tyeG9GdzlsaUV3c3Rrc3BjVDRBPT0iLCJtYWMiOiIyODc1M2ZkMDg4MTZhY2M1MjQ0YjE2MjNhMDY1ZjFiYTM0OTU2NTRmOWZjYmYzMTM4MzFkMGE3MzgyMGRmNzA4In0%3D;hyperise_session=eyJpdiI6IlI4eXVIbTdHUkRBdkdjbDNpOG1XeVE9PSIsInZhbHVlIjoicVZBMzhpS1wveFZrWEliU1BvbXJIbkhvR1JDVVE4VmVaUExnb1hjOThlWHdWUnJxalJ5c3gwREw2U21sSExzZm9XU2VheStBZ0NRbFVJZ3o4b1wvWlczZz09IiwibWFjIjoiN2IwMDZkYmUzOGRjYmYzYzZiMDY1NDNlZmM5YTczZjljNWJiOTljNjBmMzk5MzZjYzE1YjdiMzA4NjYwMDdmMCJ9;"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json;charset=UTF-8",
+        "body": "={\"data_source_category_id\":{{$node[\"SplitInBatches\"].json[\"id\"]}}}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
+      },
+      "id": "045741f8-fafa-4780-b22d-6210fccb9478",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        920,
+        220
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "={{$node[\"HTTP Request\"].json[\"name\"]}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"email\"]}}"
+            },
+            {
+              "name": "website",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"website\"]}}"
+            },
+            {
+              "name": "first_name",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"first_name\"]}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"last_name\"]}}"
+            },
+            {
+              "name": "country",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"country\"]}}"
+            },
+            {
+              "name": "state",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"state\"]}}"
+            },
+            {
+              "name": "city",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"city\"]}}"
+            },
+            {
+              "name": "street",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"street\"]}}"
+            },
+            {
+              "name": "street2",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"street2\"]}}"
+            },
+            {
+              "name": "zip",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"zip\"]}}"
+            },
+            {
+              "name": "phone",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"category_config\"][\"field_mapping\"][\"phone\"]}}"
+            },
+            {
+              "name": "article_link",
+              "value": "={{$node[\"HTTP Request\"].json[\"data_source_category\"][\"icon\"]}}"
+            },
+            {
+              "name": "id",
+              "value": "={{$node[\"SplitInBatches\"].json[\"id\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ee7a7624-8f73-4115-833b-47e750c051f7",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1V6PGFouYJitpWwYmp5hP8-lLpcn7kRYydl3v8wQNEA0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1V6PGFouYJitpWwYmp5hP8-lLpcn7kRYydl3v8wQNEA0/edit#gid=0"
+        },
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "2f97f739-3418-4844-8ff4-5592785561a9",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        1400,
+        180
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "ce8a9e48-e9a8-4e42-bc61-882d15abb2b7",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "seconds"
+      },
+      "id": "a3de4dd7-00a3-4ef8-835f-f110b704c17e",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        980,
+        540
+      ],
+      "webhookId": "10760e06-2cc3-46b7-a897-4226d1ba92bc"
+    }
+  ],
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "573140fe841abcdbf5660ecc67b132cc"
+}
