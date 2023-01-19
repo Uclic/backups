@@ -1,0 +1,363 @@
+{
+  "createdAt": "2023-01-19T13:24:36.957Z",
+  "updatedAt": "2023-01-19T14:13:49.651Z",
+  "id": 18,
+  "name": "Tehtris enrich",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "b6de2bfa-6808-48fa-97c5-cc4f4a58d037",
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"companyName\"]}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$node[\"Dropcontact\"].json[\"email\"][0][\"email\"]}}"
+            },
+            {
+              "name": "website",
+              "value": "={{$node[\"Dropcontact\"].json[\"website\"]}}"
+            },
+            {
+              "name": "first_name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"firstName\"]}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$node[\"SplitInBatches\"].json[\"lastName\"]}}"
+            },
+            {
+              "name": "linkedin",
+              "value": "={{$node[\"SplitInBatches\"].json[\"linkedinUrl\"]}}"
+            },
+            {
+              "name": "source",
+              "value": "={{$node[\"Google Sheets2\"].json[\"source\"]}}"
+            },
+            {
+              "name": "endpoint",
+              "value": "={{$node[\"Google Sheets2\"].json[\"url\"]}}"
+            },
+            {
+              "name": "occupation",
+              "value": "={{$node[\"SplitInBatches\"].json[\"occupation\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6b62a139-db77-463e-abf0-92a47d9f884a",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -360
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2042755627,
+          "mode": "list",
+          "cachedResultName": "Contact Clean",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=2042755627"
+        },
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "b4d8a2f2-b7bc-4a1e-9068-c01b0237568f",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        -140
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"SplitInBatches\"].context[\"noItemsLeft\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "7a227f0b-f514-4ba1-b451-6aa082269166",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "seconds"
+      },
+      "id": "ac86e024-1820-4c1f-b74d-92182bc7ce51",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        600,
+        340
+      ],
+      "webhookId": "10760e06-2cc3-46b7-a897-4226d1ba92bc"
+    },
+    {
+      "parameters": {
+        "additionalFields": {
+          "company": "={{$node[\"SplitInBatches\"].json[\"companyName\"]}}",
+          "first_name": "={{$node[\"SplitInBatches\"].json[\"firstName\"]}}",
+          "last_name": "={{$node[\"SplitInBatches\"].json[\"lastName\"]}}",
+          "linkedin": "={{$node[\"SplitInBatches\"].json[\"linkedinUrl\"]}}"
+        },
+        "options": {}
+      },
+      "id": "cb7d9620-2bc6-48e1-9f22-18ee813c7780",
+      "name": "Dropcontact",
+      "type": "n8n-nodes-base.dropcontact",
+      "typeVersion": 1,
+      "position": [
+        760,
+        -360
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "dropcontactApi": {
+          "id": "12",
+          "name": "Dropcontact account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1329029926,
+          "mode": "list",
+          "cachedResultName": "Bounty",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=1329029926"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "linkedin",
+              "lookupValue": "={{$node[\"SplitInBatches\"].json[\"linkedinUrl\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1e962e4a-38d7-458b-9f2d-f54864c3300d",
+      "name": "Google Sheets2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        980,
+        -420
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "8a00ff4e-153b-489b-ade5-e95303ea4744",
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1341193535,
+          "mode": "list",
+          "cachedResultName": "Contact",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOrAO7LOZwM-LAopkS5uketXWa3FvDsb5fH4Qvcbxi0/edit#gid=1341193535"
+        },
+        "options": {}
+      },
+      "id": "b009cc4b-806b-46b8-822b-519614839db3",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        0,
+        -260
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "3",
+          "name": "Google account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Dropcontact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dropcontact": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "tags": [],
+  "hash": "0a754795a60bb5f36409c381294b6a6b"
+}
